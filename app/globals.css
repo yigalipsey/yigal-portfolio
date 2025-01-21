@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🎨 רקע גרעיני (כחול כהה) */
+.bg-grainy {
+  background-color: #101116;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.2' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px;
+}
+
+/* 🎨 רקע גרעיני צהוב */
+@layer components {
+  .bg-grainy-yellow {
+    @apply bg-grainy;
+    background-color: #f4e71b;
+  }
+}
+
+/* 🎨 רקע רשת שחור */
+.bg-pattern {
+  background-color: #121318;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-grainy-blue {
+  background-color: #1461ed;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.15'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px; /* גרעיניות יותר חזקה */
+}
+
+.bg-pattern-blue {
+  background-color: #1461ed;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@keyframes waveDots {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 10px 10px; /* תנועה עדינה של הנקודות */
+  }
+}
+
+@keyframes waveDots {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 10px 10px; /* תנועה עדינה של הנקודות */
+  }
+}
+
+.bg-dynamic-pattern {
+  background-color: transparent;
+  position: relative;
+}
+
+.bg-dynamic-pattern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+    #f6e91f 1px,
+    /* צבע צהוב חזק */ transparent 1px
+  );
+  background-size: 20px 20px;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 20%,
+    /* הנקודות מתחילות שקופות */ rgba(0, 0, 0, 1) 100%
+      /* הנקודות הולכות ונחלשות */
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  animation: waveDots 10s linear infinite; /* אנימציה עדינה */
+}
+
+/* 🎨 רקע נאב בר כהה עם פאטרן */
+.bg-dark-pattern {
+  background-color: #000000;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.15) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 10px 10px;
+}
+
+/* ✨ התאמות כלליות לכל האתר */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --border: 240 5.9% 90%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
+/* 📌 אנימציה חלקה לכל האתר */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 🔥 התאמות נוספות */
+button {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.bg-hero {
+  background-color: transparent; /* שקוף */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.bg-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#1461ed 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 20%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+
+  z-index: -1;
+}
