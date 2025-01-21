@@ -17,7 +17,18 @@ export default {
         geist: "var(--font-geist-sans)",
         mono: "var(--font-geist-mono)",
       },
+      screens: {
+        mobile: { max: "767px" },
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+      },
       colors: {
+        gray: {
+          100: "hsl(var(--gray-800))",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -68,6 +79,10 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-40px)" },
         },
+        meteor: {
+          "0%": { transform: "translateY(-20%) translateX(-50%)" },
+          "100%": { transform: "translateY(300%) translateX(-50%)" },
+        },
         orbit: {
           "0%": { transform: "rotate(0deg) translateX(50px) rotate(0deg)" },
           "100%": {
@@ -78,12 +93,21 @@ export default {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
         },
+        "pop-blob": {
+          "0%": { transform: "scale(1)" },
+          "33%": { transform: "scale(1.2)" },
+          "66%": { transform: "scale(0.8)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
       animation: {
         float: "float 3s ease-in-out infinite",
         orbit: "orbit 10s linear infinite",
         fadeIn: "fadeIn 0.5s ease-in-out",
+        meteor: "meteor var(--duration) var(--delay) ease-in-out infinite",
+        "pop-blob": "pop-blob 5s infinite",
       },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

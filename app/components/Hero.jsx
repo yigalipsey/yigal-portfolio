@@ -1,13 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Typewriter from "@/components/fancy/typewriter";
 import heroImage from "../../public/images/hero-yigal.png";
+import { PhoneCall } from "lucide-react";
 
 const Hero = () => {
+  // טעינת הסקריפט של Lordicon אם לא נטען מראש
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.lordicon.com/lordicon.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
-    <section className="relative font-varela w-full h-[100vh] flex flex-col items-center justify-start text-center text-white overflow-hidden pt-10">
+    <section className="relative text-5xl rubik-bold w-full h-[100vh] flex flex-col items-center justify-start text-center text-white overflow-hidden pt-10">
       {/* אלמנט הרקע עם הנקודות */}
       <div className="relative w-full bg-hero h-full z-0 flex flex-col items-center justify-start ">
         <div className="relative z-10 flex flex-col items-center">
@@ -39,13 +48,15 @@ const Hero = () => {
             />
           </h2>
         </div>
-
         {/* כפתור קריאה לפעולה */}
         <a
           href="#projects"
-          className="mt-5 px-6 py-3 bg-grainy-blue border border-1 rounded-lg text-black font-bold text-lg hover:bg-cyan-400 transition-all duration-300"
+          className="group relative my-8 rounded-full bg-gradient-to-r from-[#1461ED]/30 via-[#1461ED]/30 via-40% to-[#1461ED]/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 hero-button"
         >
-          צפה בפרויקטים שלי
+          <div className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1461ED] via-[#1461ED] via-40% to-[#1461ED] px-4 py-2 text-white">
+            <PhoneCall className="w-[25px] h-[25px]  text-white" />
+            <span className="text-lg">צור קשר </span>
+          </div>
         </a>
       </div>
     </section>

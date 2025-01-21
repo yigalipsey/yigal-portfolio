@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+.rubik-bold {
+  font-family: var(--font-rubik), serif;
+  font-optical-sizing: auto;
+}
+.text-outline {
+  position: absolute;
+  color: transparent;
+  font-weight: bold;
+  font-size: 250px; /* התאמה לגודל הרצוי */
+
+  /* נקודות חדות עם ריווח מדויק */
+  background: radial-gradient(circle, #ff0088 1px, rgba(255, 0, 136, 0) 1px),
+    radial-gradient(circle, #ff0088 1px, rgba(255, 0, 136, 0) 1px);
+  background-size: 6px 6px, 6px 6px; /* גודל קטן יותר */
+  background-position: 0px 0px, 3px 3px; /* חפיפה כדי להוסיף חדות */
+  background-blend-mode: normal; /* מונע טשטוש */
+  z-index: 10;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* שקיפות טקסט */
+  -webkit-text-stroke: 2px rgba(255, 0, 136, 0.8);
+}
+
 /* 🎨 רקע גרעיני (כחול כהה) */
 .bg-grainy {
   background-color: #101116;
@@ -161,5 +184,34 @@ button {
   mask-size: 100% 100%;
   mask-repeat: no-repeat;
 
+  z-index: -1;
+}
+
+.bg-services-dots {
+  background-color: transparent;
+  position: relative;
+}
+
+.bg-services-dots {
+  background-color: transparent;
+  position: relative;
+}
+
+.bg-services-dots::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#9911ff 0.5px, transparent 0.5px);
+  background-size: 10px 10px;
+  mask-image: linear-gradient(
+    to top left,
+    rgba(0, 0, 0, 0) 20%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
   z-index: -1;
 }
