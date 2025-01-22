@@ -11,7 +11,7 @@ const ServicesSection = () => {
   }, []);
 
   return (
-    <section className="w-full ">
+    <section className="w-full mb-10 ">
       <div className="w-full mb-2 flex justify-end">
         <h1 className="rubik-bold mr-8 md:mr-32 md:mb-4 font-semibold text-[#9911ff] text-3xl md:text-5xl">
           השירותים <span className="text-white">שלי</span>

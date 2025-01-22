@@ -13,25 +13,39 @@ const projects = [
   {
     number: "02",
     title: "Yoad lipsey",
-    description: "אתר תדמית   ",
+    description: "אתר תדמית",
     image: "/images/yoad.png",
     url: "https://smartsalesil.com",
   },
   {
     number: "03",
     title: "TK Group",
-    description: "ייבוא רהיטים מסין  ",
+    description: "ייבוא רהיטים מסין",
     image: "/images/tkweb.png",
     url: "https://websitetomtk.vercel.app/",
+  },
+  {
+    number: "04",
+    title: " Fitness app",
+    description: "אפליקציית ווב",
+    image: "/images/fittnes.png",
+    url: "https://www.yigalipsey-fittnes.com/",
+  },
+  {
+    number: "05",
+    title: " Fantasy league",
+    description: "אפליקציית ווב",
+    image: "/images/fantasy.png",
+    url: "https://www.yigalipsey-fantasy.com/",
   },
 ];
 
 export default function ProjectsSection() {
   return (
-    <section className="flex   mt-10 relative z-40  flex-col w-full md:w-4/5 items-center justify-center mx-auto min-h-screen  mobile:w-full mobile:p-0">
-      <div className=" w-full  mb-2 flex justify-end">
-        <h1 className=" rubik-bold mr-14 md:mr-4 font-semibold text-[#ff0088] text-3xl md:text-5xl">
-          פרוייקטים <span className=" text-white 3">נבחרים </span>
+    <section className="flex   mt-20 relative z-40  flex-col w-full md:w-5/6 items-center justify-center mx-auto min-h-screen  mobile:w-full mobile:p-0">
+      <div className=" w-full mb-8 md:mb-0  flex justify-end">
+        <h1 className=" rubik-bold mr-8 md:mr-2 font-semibold text-[#ff0088] text-3xl md:text-5xl">
+          פרוייקטים <span className=" text-white 3">אחרונים </span>
         </h1>
       </div>
       {projects.map((project, index) => (

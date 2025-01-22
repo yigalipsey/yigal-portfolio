@@ -13,7 +13,7 @@ export default function ProjectCard({
 
   return (
     <div
-      className={`relative w-full mt-10 flex flex-col mobile:flex-col md:flex-row items-center justify-between p-6 rounded-lg overflow-visible ${
+      className={`relative w-full  flex flex-col mobile:flex-col md:flex-row items-center justify-between p-6 rounded-lg overflow-visible ${
         isRight ? "md:flex-row-reverse" : ""
       }`}
     >
@@ -25,8 +25,8 @@ export default function ProjectCard({
                    md:text-[180px] md:top-1/2 md:-translate-y-1/2
                      ${
                        isRight
-                         ? "md:right-[-20px] mobile:right-[30px] mobile:-translate-x-0"
-                         : "md:left-[-15px] mobile:left-[37px] mobile:-translate-x-0"
+                         ? "md:right-[-20px]  mobile:right-[5px] mobile:-translate-x-0"
+                         : "md:left-[-15px] mobile:left-[15px] mobile:-translate-x-0"
                      }
                     `}
         >
@@ -34,7 +34,9 @@ export default function ProjectCard({
         </span>
         <div
           className={`relative z-30  ${
-            isRight ? "md:translate-x-[-130px]" : "md:translate-x-[130px]"
+            isRight
+              ? "md:translate-x-[-130px] mobile:translate-x-[8px]"
+              : "md:translate-x-[130px] mobile:translate-x-[-3px]"
           } `}
         >
           <a
@@ -66,14 +68,14 @@ export default function ProjectCard({
       >
         <h2
           className={`text-xl -mt-5 md:-mt-0 md:text-5xl font-bold text-[#ff0088] ${
-            isRight ? "mobile:mr-7" : "mobile:ml-7"
+            isRight ? "mobile:mr-3" : "mobile:ml-5"
           }`}
         >
           {title}
         </h2>
         <p
           className={`text-3xl md:mt-1  text-gray-300 mobile:text-sm ${
-            isRight ? "mobile:mr-7" : "mobile:ml-7"
+            isRight ? "mobile:mr-3" : "mobile:ml-5"
           }`}
         >
           {description}
@@ -102,7 +104,7 @@ function TiltedCover({ image, direction = "right" }) {
         alt={image.alt}
         width={400}
         height={250}
-        className="w-full h-full object-cover "
+        className="w-full   h-full object-cover "
         priority
       />
     </div>

@@ -16,7 +16,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative text-5xl rubik-bold w-full h-[100vh] flex flex-col items-center justify-start text-center text-white overflow-hidden pt-10">
+    <section className="relative text-5xl rubik-bold w-full h-[95vh] md:h-[100vh] flex flex-col items-center justify-start text-center text-white overflow-hidden pt-10">
       {/* אלמנט הרקע עם הנקודות */}
       <div className="relative w-full bg-hero h-full z-0 flex flex-col items-center justify-start ">
         <div className="relative z-10 flex flex-col items-center">
@@ -39,9 +39,9 @@ const Hero = () => {
           </h2>
           <h2 className="text-4xl sm:text-5xl font-bold text-[#F6E91F]">
             <Typewriter
-              text={["מתכנת פולסטאק", "מעצב ובונה אתרים"]}
+              text={["מתכנת פולסטאק", "מעצב ומפתח אתרים"]}
               speed={70}
-              className="text-white"
+              className="text-white mr-8"
               waitTime={1500}
               deleteSpeed={40}
               cursorChar={"_"}
