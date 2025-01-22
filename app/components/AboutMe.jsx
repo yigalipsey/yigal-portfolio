@@ -40,10 +40,46 @@ export default function AboutMe() {
     },
   };
 
+  const SpeechBubble = ({ children, rotate = 0, maxWidth = "150px" }) => (
+    <div
+      className="relative w-full h-full"
+      style={{ transform: `rotate(${rotate}deg)` }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        height="100%"
+        viewBox="0 0 810 809.999993"
+        preserveAspectRatio="xMidYMid meet"
+        version="1.0"
+      >
+        <defs>
+          <clipPath id="speechBubble">
+            <path d="M 13.859375 151.710938 L 796.109375 151.710938 L 796.109375 483 L 13.859375 483 Z M 13.859375 151.710938 " />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#speechBubble)">
+          <path
+            fill="#ffffff"
+            d="M 112.566406 463.113281 C 117.195312 461.628906 121.320312 459.746094 125.203125 457.683594 C 150.460938 473.316406 180.136719 482.496094 212.023438 482.496094 L 630.753906 482.496094 C 722.09375 482.496094 796.144531 408.449219 796.144531 317.113281 C 796.144531 225.777344 722.09375 151.726562 630.753906 151.726562 L 212.015625 151.726562 C 120.679688 151.726562 46.636719 225.773438 46.636719 317.113281 C 46.636719 350.609375 56.667969 381.722656 73.78125 407.769531 C 64.863281 427.148438 45.652344 458.511719 13.851562 461.195312 C 13.851562 461.195312 49.089844 483.472656 112.5625 463.117188 Z"
+          />
+        </g>
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <p
+          className="font-varela text-sm whitespace-normal text-black"
+          style={{ maxWidth }}
+        >
+          {children}
+        </p>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center min-h-screen bg-[#0A0F1C]">
       <div className="w-[90%] py-8 dotted-background p-4 sm:p-8 lg:p-16">
-        <div className="w-[90%] h-[90%] mx-auto bg-black md:w-full md:h-full md:p-10 px-4 py-3  text-center flex flex-col relative">
+        <div className="w-[90%] h-[90%] mx-auto bg-black md:w-full md:h-full md:p-10 px-4 py-3 rounded-2xl text-center flex flex-col relative">
           <div className="relative mb-8">
             <motion.div
               ref={ref}
@@ -64,25 +100,28 @@ export default function AboutMe() {
                 initial="hidden"
                 animate={controls1}
                 variants={variants}
-                className="absolute bg-white text-black p-2 rounded-tl-xl rounded-tr-xl rounded-bl-xl left-1/2 top-[15%] transform -translate-x-1/2 -translate-y-1/2 z-10"
+                className="absolute flex justify-center items-center left-1/2 top-[-5%] transform -translate-x-1/2 -translate-y-1/2 z-10"
+                style={{
+                  width: "180px",
+                  height: "100px",
+                  transformOrigin: "center center",
+                  transform: "rotate(45deg)",
+                }}
               >
-                <p className="font-varela text-sm whitespace-normal max-w-[150px]">
-                  {messages[0]}
-                </p>
-                <div className="absolute left-1/2 bottom-[-8px] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white transform -translate-x-1/2"></div>
+                <SpeechBubble rotate={-45}>{messages[0]}</SpeechBubble>
               </motion.div>
               <motion.div
                 initial="hidden"
                 animate={controls2}
                 variants={variants}
-                className="absolute bg-white text-black p-2 rounded-bl-xl rounded-br-xl rounded-tr-xl left-1/2 top-[65%] transform -translate-x-1/2 -translate-y-1/2 z-10"
+                className="absolute left-1/2 bottom-[-20%] transform -translate-x-1/2 translate-y-1/2 z-10"
+                style={{
+                  width: "320px",
+                  height: "140px",
+                  transformOrigin: "center center",
+                }}
               >
-                <p className="font-varela text-sm whitespace-normal max-w-[150px]">
-                  {messages[1].split(" ").slice(0, 4).join(" ")}
-                  <br />
-                  {messages[1].split(" ").slice(4).join(" ")}
-                </p>
-                <div className="absolute left-1/2 top-[-8px] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-white transform -translate-x-1/2"></div>
+                <SpeechBubble width="980px">{messages[1]}</SpeechBubble>
               </motion.div>
             </motion.div>
           </div>
