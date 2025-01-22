@@ -17,7 +17,7 @@ const AboutMe = () => {
     return () => clearInterval(interval); // מנקה את ה-timer כשלא צריך אותו
   }, []);
 
-  const messages = ["תקשיבו לו", "הוא לא הביא לי חטיף\nלהגיד את זה"];
+  const messages = ["תקשיבו לו", "הוא לא הביא לי חטיף \nלהגיד את זה"];
 
   const bubbleVariants = {
     hidden: {
@@ -57,7 +57,7 @@ const AboutMe = () => {
       {" "}
       <div
         className={`rounded-2xl relative ${
-          isBottom ? "mr-4 px-12 py-4 bg-white " : "p-4 bg-white"
+          isBottom ? "mr-4 px-8 py-4 bg-white " : "p-4 bg-white"
         }`}
         style={{
           display: "flex", // לדוגמא, תמיד להשתמש בפלקס
@@ -79,7 +79,7 @@ const AboutMe = () => {
                 }
               : {
                   bottom: "-6px",
-                  left: "30%",
+                  left: "50%",
                   transform: " rotate(45deg)",
                 }
           }
@@ -92,7 +92,7 @@ const AboutMe = () => {
   );
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center">
       <div className="w-[90%]  dotted-background  max-w-4xl mx-auto py-8 p-4 sm:p-8 lg:p-16 relative">
         <div className="bg-black  md:p-10 p-4 py-6  ">
           <div className="relative ">
@@ -121,7 +121,7 @@ const AboutMe = () => {
                 transition={{ delay: 1.5 }}
                 className={`absolute  ${
                   currentMessageIndex === 1 && "hidden"
-                }   bottom-32 left-2/4 translate-y-1/2`}
+                }   bottom-32 left-[40%] translate-y-1/2`}
               >
                 <SpeechBubble isBottom>{messages[1]}</SpeechBubble>
               </motion.div>
