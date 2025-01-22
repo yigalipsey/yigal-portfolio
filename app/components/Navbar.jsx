@@ -17,7 +17,17 @@ const NavBar = () => {
         ref={containerRef}
         style={nav}
       >
-        <motion.div style={background} variants={sidebarVariants} />
+        <motion.div
+          style={background}
+          variants={sidebarVariants}
+          className="bg-grainy-blue"
+        />
+        <motion.div
+          style={dottedBackground}
+          initial="closed"
+          animate={isOpen ? "open" : "closed"}
+          variants={dottedBackgroundVariants}
+        />
         <Navigation />
         <MenuToggle toggle={() => setIsOpen(!isOpen)} />
       </motion.nav>
@@ -36,9 +46,9 @@ const navVariants = {
 
 const Navigation = () => (
   <motion.ul style={list} variants={navVariants}>
-    {[0, 1, 2, 3, 4].map((i) => (
-      <MenuItem i={i} key={i} />
-    ))}
+    <MenuItem text="דף הבית" href="/" />
+    <MenuItem text="פרוייקטים" href="/projects" />
+    <MenuItem text="שירותים" href="/services" />
   </motion.ul>
 );
 
@@ -59,10 +69,7 @@ const itemVariants = {
   },
 };
 
-const colors = ["#FF008C", "#D309E1", "#9C1AFF", "#7700FF", "#4400FF"];
-
-const MenuItem = ({ i }) => {
-  const border = `2px solid ${colors[i]}`;
+const MenuItem = ({ text, href }) => {
   return (
     <motion.li
       style={listItem}
@@ -70,8 +77,9 @@ const MenuItem = ({ i }) => {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
     >
-      <div style={{ ...iconPlaceholder, border }} />
-      <div style={{ ...textPlaceholder, border }} />
+      <a href={href} style={menuLink} className="font-varela">
+        {text}
+      </a>
     </motion.li>
   );
 };
@@ -96,40 +104,57 @@ const sidebarVariants = {
   },
 };
 
+const dottedBackgroundVariants = {
+  open: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  closed: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 const Path = (props) => (
   <motion.path
     fill="transparent"
     strokeWidth="3"
-    stroke="hsl(0, 0%, 18%)"
+    stroke="#fff"
     strokeLinecap="round"
     {...props}
   />
 );
 
 const MenuToggle = ({ toggle }) => (
-  <button style={toggleContainer} onClick={toggle}>
-    <svg width="23" height="23" viewBox="0 0 23 23">
-      <Path
-        variants={{
-          closed: { d: "M 2 2.5 L 20 2.5" },
-          open: { d: "M 3 16.5 L 17 2.5" },
-        }}
-      />
-      <Path
-        d="M 2 9.423 L 20 9.423"
-        variants={{
-          closed: { opacity: 1 },
-          open: { opacity: 0 },
-        }}
-        transition={{ duration: 0.1 }}
-      />
-      <Path
-        variants={{
-          closed: { d: "M 2 16.346 L 20 16.346" },
-          open: { d: "M 3 2.5 L 17 16.346" },
-        }}
-      />
-    </svg>
+  <button style={toggleContainer} onClick={toggle} className="bg-grainy-blue">
+    <div style={iconWrapper}>
+      <svg width="23" height="23" viewBox="0 0 23 23">
+        <Path
+          variants={{
+            closed: { d: "M 2 2.5 L 20 2.5" },
+            open: { d: "M 3 16.5 L 17 2.5" },
+          }}
+        />
+        <Path
+          d="M 2 9.423 L 20 9.423"
+          variants={{
+            closed: { opacity: 1 },
+            open: { opacity: 0 },
+          }}
+          transition={{ duration: 0.1 }}
+        />
+        <Path
+          variants={{
+            closed: { d: "M 2 16.346 L 20 16.346" },
+            open: { d: "M 3 2.5 L 17 16.346" },
+          }}
+        />
+      </svg>
+    </div>
   </button>
 );
 
@@ -147,7 +172,7 @@ const useDimensions = (ref) => {
 };
 
 const container = {
-  position: "absolute",
+  position: "fixed",
   top: 0,
   left: 0,
   right: 0,
@@ -157,7 +182,7 @@ const container = {
 };
 
 const nav = {
-  position: "absolute",
+  position: "fixed",
   top: 0,
   right: 0,
   bottom: 0,
@@ -166,58 +191,77 @@ const nav = {
 };
 
 const background = {
-  position: "absolute",
+  position: "fixed",
   top: 0,
   right: 0,
   bottom: 0,
   width: "300px",
-  background: "#fff",
+};
+
+const dottedBackground = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
+  backgroundSize: "15px 15px",
+  backgroundPosition: "center bottom",
+  maskImage:
+    "linear-gradient(to top, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0) 60%)",
+  maskSize: "100% 100%",
+  maskRepeat: "no-repeat",
+  zIndex: 1,
+  pointerEvents: "none",
 };
 
 const toggleContainer = {
+  position: "fixed",
   outline: "none",
   border: "none",
   cursor: "pointer",
-  position: "absolute",
   top: 18,
   right: 15,
   width: 50,
   height: 50,
   borderRadius: "50%",
-  background: "transparent",
-  zIndex: 1,
+  zIndex: 1001,
+};
+
+const iconWrapper = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 const list = {
   padding: "25px",
   position: "absolute",
-  top: "100px",
+  top: "80px",
   width: "230px",
-  right: "0",
+  right: "20px",
+  zIndex: 2,
 };
 
 const listItem = {
   display: "flex",
   alignItems: "center",
-  justifyContent: "flex-start",
+  justifyContent: "flex-end",
   padding: 0,
-  margin: "0 0 20px 0",
+  margin: "0 0 15px 0",
   cursor: "pointer",
+  width: "100%",
 };
 
-const iconPlaceholder = {
-  width: 40,
-  height: 40,
-  borderRadius: "50%",
-  flex: "40px 0",
-  marginRight: 20,
-};
-
-const textPlaceholder = {
-  borderRadius: 5,
-  width: 200,
-  height: 20,
-  flex: 1,
+const menuLink = {
+  color: "#fff",
+  textDecoration: "none",
+  fontSize: "1.5rem",
+  width: "100%",
+  padding: "10px 0",
+  textAlign: "right",
 };
 
 export default NavBar;

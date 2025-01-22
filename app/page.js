@@ -4,7 +4,7 @@ import Hero from "./components/Hero";
 import StackSection from "./components/StackSection";
 import ProjectsSection from "./components/ProjectsSection";
 import Footer from "./components/Footer";
-import OrbitingItems3D from "@/components/animata/list/orbiting-items-3-d";
+import OrbitingItems from "../components/animata/list/orbiting-items";
 import ServicesSection from "./components/ServicesSection";
 
 export default function Home() {
@@ -14,6 +14,7 @@ export default function Home() {
       <Hero />
       <ServicesSection />
       <ProjectsSection />
+      <OrbitingItems />
     </div>
   );
 }
