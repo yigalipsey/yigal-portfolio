@@ -1,169 +1,168 @@
 "use client";
+import React, { useRef } from "react";
+import { useState, useEffect } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 
-import React, { useRef, useEffect } from "react";
-import Image from "next/image";
-import { motion, useInView, useAnimation } from "framer-motion";
-
-import AboutImg from "../../public/images/about.png";
-
-export default function AboutMe() {
+const AboutMe = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const controls1 = useAnimation();
-  const controls2 = useAnimation();
+  const isInView = useInView(ref, { once: true, threshold: 0.9 });
 
-  const messages = ["תקשיבו לו!", "ואני לא אומר את זה כי הוא הבטיח לי חטיף"];
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
   useEffect(() => {
-    if (isInView) {
-      controls1.start("visible").then(() => controls1.start("pulse"));
-      setTimeout(() => {
-        controls2.start("visible").then(() => controls2.start("pulse"));
-      }, 1000);
-    }
-  }, [isInView, controls1, controls2]);
+    const interval = setInterval(() => {
+      setCurrentMessageIndex((prevIndex) => (prevIndex === 0 ? 1 : 0));
+    }, 2500);
 
-  const variants = {
-    hidden: { opacity: 0, scale: 0 },
+    return () => clearInterval(interval); // מנקה את ה-timer כשלא צריך אותו
+  }, []);
+
+  const messages = ["תקשיבו לו", "הוא לא הביא לי חטיף\nלהגיד את זה"];
+
+  const bubbleVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.8,
+    },
     visible: {
       opacity: 1,
+      y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 260, damping: 20 },
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      },
     },
+  };
+
+  const pulseVariants = {
     pulse: {
       scale: [1, 1.05, 1],
       transition: {
         duration: 2,
-        repeat: Number.POSITIVE_INFINITY,
+        repeat: Infinity,
         repeatType: "reverse",
       },
     },
   };
 
-  const SpeechBubble = ({ children, rotate = 0, maxWidth = "150px" }) => (
-    <div
-      className="relative w-full h-full"
-      style={{ transform: `rotate(${rotate}deg)` }}
+  const SpeechBubble = ({ children, isBottom = false, rotation = 0 }) => (
+    <motion.div
+      className={`relative inline-block mt-12`}
+      variants={pulseVariants}
+      animate="pulse"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="100%"
-        height="100%"
-        viewBox="0 0 810 809.999993"
-        preserveAspectRatio="xMidYMid meet"
-        version="1.0"
+      {" "}
+      <div
+        className={`rounded-2xl relative ${
+          isBottom ? "mr-4 px-12 py-4 bg-white " : "p-4 bg-white"
+        }`}
+        style={{
+          display: "flex", // לדוגמא, תמיד להשתמש בפלקס
+          ...(isBottom
+            ? { transform: `rotate(${45}deg)` }
+            : { transform: `rotate(25deg)` }),
+        }}
       >
-        <defs>
-          <clipPath id="speechBubble">
-            <path d="M 13.859375 151.710938 L 796.109375 151.710938 L 796.109375 483 L 13.859375 483 Z M 13.859375 151.710938 " />
-          </clipPath>
-        </defs>
-        <g clipPath="url(#speechBubble)">
-          <path
-            fill="#ffffff"
-            d="M 112.566406 463.113281 C 117.195312 461.628906 121.320312 459.746094 125.203125 457.683594 C 150.460938 473.316406 180.136719 482.496094 212.023438 482.496094 L 630.753906 482.496094 C 722.09375 482.496094 796.144531 408.449219 796.144531 317.113281 C 796.144531 225.777344 722.09375 151.726562 630.753906 151.726562 L 212.015625 151.726562 C 120.679688 151.726562 46.636719 225.773438 46.636719 317.113281 C 46.636719 350.609375 56.667969 381.722656 73.78125 407.769531 C 64.863281 427.148438 45.652344 458.511719 13.851562 461.195312 C 13.851562 461.195312 49.089844 483.472656 112.5625 463.117188 Z"
-          />
-        </g>
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <p
-          className="font-varela text-sm whitespace-normal text-black"
-          style={{ maxWidth }}
-        >
+        <div
+          className={`absolute w-4 h-4  ${
+            isBottom ? "bg-white" : "  bg-white"
+          }`}
+          style={
+            isBottom
+              ? {
+                  left: "70%",
+                  bottom: "-6px",
+                  transform: "translateX(-10%) rotate(45deg)",
+                }
+              : {
+                  bottom: "-6px",
+                  left: "30%",
+                  transform: " rotate(45deg)",
+                }
+          }
+        />
+        <p className="relative text-black font-varela text-lg text-center min-w-[100px] z-10 whitespace-pre-line">
           {children}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#0A0F1C]">
-      <div className="w-[90%] py-8 dotted-background p-4 sm:p-8 lg:p-16">
-        <div className="w-[90%] h-[90%] mx-auto bg-black md:w-full md:h-full md:p-10 px-4 py-3 rounded-2xl text-center flex flex-col relative">
-          <div className="relative mb-8">
-            <motion.div
-              ref={ref}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <div className="relative mx-auto aspect-square w-56 overflow-hidden rounded-none border border-white/10">
-                <Image
-                  src={AboutImg}
+    <div className="flex justify-center items-center min-h-screen ">
+      <div className="w-[90%]  dotted-background  max-w-4xl mx-auto py-8 p-4 sm:p-8 lg:p-16 relative">
+        <div className="bg-black  md:p-10 p-4 py-6  ">
+          <div className="relative ">
+            <div ref={ref} className="relative">
+              <motion.div
+                initial="hidden"
+                animate={currentMessageIndex === 1 ? "visible" : "hidden"}
+                variants={bubbleVariants}
+                className="absolute  top-0 left-1/2 -translate-x-1/2"
+              >
+                <SpeechBubble rotation={25}>{messages[0]}</SpeechBubble>
+              </motion.div>
+
+              <div className="relative mx-auto w-56 aspect-square overflow-hidden rounded-lg border border-white/10">
+                <img
+                  src="/images/about.png"
                   alt="תמונה שלי עם הכלב שלי"
-                  fill
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
+
               <motion.div
                 initial="hidden"
-                animate={controls1}
-                variants={variants}
-                className="absolute flex justify-center items-center left-1/2 top-[-5%] transform -translate-x-1/2 -translate-y-1/2 z-10"
-                style={{
-                  width: "180px",
-                  height: "100px",
-                  transformOrigin: "center center",
-                  transform: "rotate(45deg)",
-                }}
+                animate={isInView ? "visible" : "hidden"}
+                variants={bubbleVariants}
+                transition={{ delay: 1.5 }}
+                className={`absolute  ${
+                  currentMessageIndex === 1 && "hidden"
+                }   bottom-32 left-2/4 translate-y-1/2`}
               >
-                <SpeechBubble rotate={-45}>{messages[0]}</SpeechBubble>
+                <SpeechBubble isBottom>{messages[1]}</SpeechBubble>
               </motion.div>
-              <motion.div
-                initial="hidden"
-                animate={controls2}
-                variants={variants}
-                className="absolute left-1/2 bottom-[-20%] transform -translate-x-1/2 translate-y-1/2 z-10"
-                style={{
-                  width: "320px",
-                  height: "140px",
-                  transformOrigin: "center center",
-                }}
-              >
-                <SpeechBubble width="980px">{messages[1]}</SpeechBubble>
-              </motion.div>
-            </motion.div>
-          </div>
-          <motion.div
-            dir="rtl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h1 className="font-varela text-xl font-bold text-white">
-              קצת עליי
-            </h1>
-            <h2 className="font-varela text-3xl font-light text-[#F3E618]">
-              יגאל ליפסי
-            </h2>
-
-            <div className="space-y-3 font-varela text-sm leading-relaxed text-gray-300">
-              <p>
-                הנדסאי תוכנה מצטיין ובוגר מכללת סינגאלובסקי בהצטיינות, עם תשוקה
-                לטכנולוגיה וליצירת פתרונות דיגיטליים חדשניים.
-              </p>
-
-              <p>
-                אני מתמחה בבניית אתרים ואפליקציות עם דגש על{" "}
-                <span className="text-[#F3E618] font-bold ml-1">מהירות</span>
-                חוויית משתמש חלקה ואנימציות שמכניסות חיים לכל עמוד.
-              </p>
-
-              <p>
-                בעיניי, קוד טוב הוא לא רק פונקציונלי – הוא אמנות. אני שואף ליצור{" "}
-                <span className="text-[#F3E618]">ממשקים מודרניים</span>, מהירים
-                וסוחפים, שמשדרים מקצועיות ודינמיות.
-              </p>
-
-              <p className="text-[#F3E618] font-bold">
-                מחפשים אתר שירגיש חלק, אינטואיטיבי ומרשים? בואו נבנה משהו בלתי
-                נשכח.
-              </p>
             </div>
-          </motion.div>
+          </div>
+
+          <div className="flex justify-center mt-6  items-center  ">
+            <div dir="rtl" className=" max-w-2xl text-center px-4">
+              <h1 className="font-varela text-xl font-bold text-white">
+                קצת עליי
+              </h1>
+              <h2 className="font-varela text-3xl mb-2 font-light text-[#F3E618]">
+                יגאל ליפסי
+              </h2>
+
+              <div className="space-y-4 font-varela text-sm leading-relaxed text-gray-300">
+                <p>
+                  הנדסאי תוכנה מצטיין ובוגר מכללת סינגאלובסקי בהצטיינות, עם
+                  תשוקה לטכנולוגיה וליצירת פתרונות דיגיטליים חדשניים.
+                </p>
+                <p>
+                  אני מתמחה בבניית אתרים ואפליקציות עם דגש על{" "}
+                  <span className="text-[#F3E618] font-bold">מהירות</span>{" "}
+                  חוויית משתמש חלקה ואנימציות שמכניסות חיים לכל עמוד.
+                </p>
+                <p>
+                  בעיניי, קוד טוב הוא לא רק פונקציונלי – הוא אמנות. אני שואף
+                  ליצור <span className="text-[#F3E618]">ממשקים מודרניים</span>,
+                  מהירים וסוחפים, שמשדרים מקצועיות ודינמיות.
+                </p>
+                <p className="text-[#F3E618] font-bold">
+                  מחפשים אתר שירגיש חלק, אינטואיטיבי ומרשים? בואו נבנה משהו בלתי
+                  נשכח.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default AboutMe;
