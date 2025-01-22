@@ -1,202 +1,223 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { motion } from "motion/react";
 
-const Navbar = () => {
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
+const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const navRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const scrollToSection = (id) => {
-    setIsOpen(false);
-    const section = document.getElementById(id);
-    if (section) {
-      const offset = 80; // גובה ה-Navbar
-      const sectionPosition =
-        section.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: sectionPosition - offset,
-        behavior: "smooth",
-      });
-    }
-  };
+  const containerRef = useRef(null);
+  const { height } = useDimensions(containerRef);
 
   return (
-    <motion.nav
-      ref={navRef}
-      initial={false}
-      animate={isOpen ? "open" : "closed"}
-      className={`fixed top-0 w-full z-50 font-varela transition-all duration-300 ${
-        isScrolled || isOpen
-          ? "bg-dark-pattern text-white shadow-lg"
-          : "bg-transparent text-white"
-      }`}
-      style={{ direction: "rtl" }}
-    >
-      <div className="w-5/6 mx-auto">
-        <div className="flex items-center justify-between w-full h-20">
-          {/* שם האתר */}
-          {/* <Link href="#home" className="text-2xl font-bold text-[#F6E91F]">
-                יגאל ליפסי
-              </Link> */}
-
-          {/* כפתור המבורגר במובייל */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white hover:text-[#6FE2F5] focus:outline-none"
-          >
-            <svg
-              className="h-10 w-10"
-              stroke="currentColor"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              {isOpen ? (
-                <motion.path
-                  initial={false}
-                  animate="open"
-                  variants={pathVariants}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <motion.path
-                  initial={false}
-                  animate="closed"
-                  variants={pathVariants}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              )}
-            </svg>
-          </button>
-
-          {/* תפריט דסקטופ */}
-          <div className="hidden md:flex items-center space-x-reverse space-x-14">
-            <button
-              onClick={() => scrollToSection("about")}
-              className="text-white hover:text-[#F6E91F] text-lg font-bold"
-            >
-              עליי
-            </button>
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="text-white hover:text-[#F6E91F] text-lg font-bold"
-            >
-              פרויקטים
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-white hover:text-[#F6E91F] text-lg font-bold"
-            >
-              צור קשר
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* תפריט מובייל */}
-      <motion.div
-        variants={mobileVariants}
-        className="absolute top-20 left-0 w-full bg-[#121318] text-white transition-all duration-300 border-b shadow-md z-50"
+    <div style={container}>
+      <motion.nav
+        initial={false}
+        animate={isOpen ? "open" : "closed"}
+        custom={height}
+        ref={containerRef}
+        style={nav}
       >
-        <motion.div className="text-right w-full" variants={mobileListVariants}>
-          <motion.button
-            onClick={() => scrollToSection("about")}
-            className="block text-lg py-3 pr-10 border-b text-right border-gray-700 w-full hover:text-[#F6E91F] font-medium"
-          >
-            עליי
-          </motion.button>
-          <motion.button
-            onClick={() => scrollToSection("projects")}
-            className="block text-lg py-3 pr-10 border-b text-right border-gray-700 w-full hover:text-[#F6E91F] font-medium"
-          >
-            פרויקטים
-          </motion.button>
-          <motion.button
-            onClick={() => scrollToSection("contact")}
-            className="block text-lg py-3 pr-10 w-full text-right hover:text-[#F6E91F] font-medium"
-          >
-            צור קשר
-          </motion.button>
-        </motion.div>
-      </motion.div>
-    </motion.nav>
+        <motion.div style={background} variants={sidebarVariants} />
+        <Navigation />
+        <MenuToggle toggle={() => setIsOpen(!isOpen)} />
+      </motion.nav>
+    </div>
   );
 };
+
 const navVariants = {
   open: {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-    height: "auto",
   },
   closed: {
     transition: { staggerChildren: 0.05, staggerDirection: -1 },
-    height: 0,
   },
 };
 
-const mobileVariants = {
+const Navigation = () => (
+  <motion.ul style={list} variants={navVariants}>
+    {[0, 1, 2, 3, 4].map((i) => (
+      <MenuItem i={i} key={i} />
+    ))}
+  </motion.ul>
+);
+
+const itemVariants = {
   open: {
+    x: 0,
     opacity: 1,
-    display: "block",
-    transition: { duration: 0.3 },
+    transition: {
+      x: { stiffness: 1000, velocity: -100 },
+    },
   },
   closed: {
+    x: 50,
     opacity: 0,
-    display: "none",
-    height: 0,
-    transition: { duration: 0.3 },
+    transition: {
+      x: { stiffness: 1000 },
+    },
   },
-};
-const mobileListVariants = {
-  open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-};
-const pathVariants = {
-  open: { d: "M6 18L18 6M6 6l12 12" },
-  closed: { d: "M4 6h16M4 12h16m-7 6h7" },
 };
 
-const Path = ({ d, variants, transition }) => (
+const colors = ["#FF008C", "#D309E1", "#9C1AFF", "#7700FF", "#4400FF"];
+
+const MenuItem = ({ i }) => {
+  const border = `2px solid ${colors[i]}`;
+  return (
+    <motion.li
+      style={listItem}
+      variants={itemVariants}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <div style={{ ...iconPlaceholder, border }} />
+      <div style={{ ...textPlaceholder, border }} />
+    </motion.li>
+  );
+};
+
+const sidebarVariants = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at calc(100% - 40px) 40px)`,
+    transition: {
+      type: "spring",
+      stiffness: 20,
+      restDelta: 2,
+    },
+  }),
+  closed: {
+    clipPath: "circle(30px at calc(100% - 40px) 40px)",
+    transition: {
+      delay: 0.5,
+      type: "spring",
+      stiffness: 400,
+      damping: 40,
+    },
+  },
+};
+
+const Path = (props) => (
   <motion.path
     fill="transparent"
     strokeWidth="3"
     stroke="hsl(0, 0%, 18%)"
     strokeLinecap="round"
-    d={d}
-    variants={variants}
-    transition={transition}
+    {...props}
   />
 );
+
 const MenuToggle = ({ toggle }) => (
-  <button
-    onClick={toggle}
-    className="md:hidden text-white hover:text-[#6FE2F5] focus:outline-none"
-  >
+  <button style={toggleContainer} onClick={toggle}>
     <svg width="23" height="23" viewBox="0 0 23 23">
-      <Path variants={pathVariants} />
+      <Path
+        variants={{
+          closed: { d: "M 2 2.5 L 20 2.5" },
+          open: { d: "M 3 16.5 L 17 2.5" },
+        }}
+      />
+      <Path
+        d="M 2 9.423 L 20 9.423"
+        variants={{
+          closed: { opacity: 1 },
+          open: { opacity: 0 },
+        }}
+        transition={{ duration: 0.1 }}
+      />
+      <Path
+        variants={{
+          closed: { d: "M 2 16.346 L 20 16.346" },
+          open: { d: "M 3 2.5 L 17 16.346" },
+        }}
+      />
     </svg>
   </button>
 );
 
-export default Navbar;
+const useDimensions = (ref) => {
+  const dimensions = useRef({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (ref.current) {
+      dimensions.current.width = ref.current.offsetWidth;
+      dimensions.current.height = ref.current.offsetHeight;
+    }
+  }, [ref]);
+
+  return dimensions.current;
+};
+
+const container = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 1000,
+  pointerEvents: "none",
+};
+
+const nav = {
+  position: "absolute",
+  top: 0,
+  right: 0,
+  bottom: 0,
+  width: "300px",
+  pointerEvents: "auto",
+};
+
+const background = {
+  position: "absolute",
+  top: 0,
+  right: 0,
+  bottom: 0,
+  width: "300px",
+  background: "#fff",
+};
+
+const toggleContainer = {
+  outline: "none",
+  border: "none",
+  cursor: "pointer",
+  position: "absolute",
+  top: 18,
+  right: 15,
+  width: 50,
+  height: 50,
+  borderRadius: "50%",
+  background: "transparent",
+  zIndex: 1,
+};
+
+const list = {
+  padding: "25px",
+  position: "absolute",
+  top: "100px",
+  width: "230px",
+  right: "0",
+};
+
+const listItem = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  padding: 0,
+  margin: "0 0 20px 0",
+  cursor: "pointer",
+};
+
+const iconPlaceholder = {
+  width: 40,
+  height: 40,
+  borderRadius: "50%",
+  flex: "40px 0",
+  marginRight: 20,
+};
+
+const textPlaceholder = {
+  borderRadius: 5,
+  width: 200,
+  height: 20,
+  flex: 1,
+};
+
+export default NavBar;
