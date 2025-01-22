@@ -6,6 +6,7 @@ import ProjectsSection from "./components/ProjectsSection";
 import Footer from "./components/Footer";
 import OrbitingItems from "../components/animata/list/orbiting-items";
 import ServicesSection from "./components/ServicesSection";
+import AboutMe from "./components/AboutMe";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <Hero />
       <ServicesSection />
       <ProjectsSection />
-      <OrbitingItems />
+      <AboutMe />
     </div>
   );
 }

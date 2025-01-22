@@ -125,6 +125,12 @@
   background-size: 10px 10px;
 }
 
+.dotted-background {
+  background-image: radial-gradient(#f3e618 1px, transparent 1px);
+  background-size: 16px 16px; /* Reduced from 24px to make dots denser */
+  background-color: transparent; /* Changed to transparent to show app background */
+}
+
 /* ✨ התאמות כלליות לכל האתר */
 @layer base {
   :root {

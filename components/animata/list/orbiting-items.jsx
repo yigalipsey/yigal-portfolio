@@ -62,7 +62,7 @@ export default function OrbitingItems({
   return (
     <div
       className={cn(
-        "storybook-fix group flex items-center justify-center py-16",
+        "storybook-fix group flex items-center justify-center py-32",
         containerClassName
       )}
     >
@@ -96,12 +96,48 @@ export default function OrbitingItems({
           );
         })}
 
-        <div
-          className={cn(
-            "absolute h-1/2 w-1/2 rounded-full border-2 border-gray-700",
-            reverse
-          )}
-        />
+        <div className={cn("absolute h-1/2 w-1/2", reverse)}>
+          <svg viewBox="0 0 100 100" className="w-full h-full">
+            <defs>
+              <path
+                id="curveTop"
+                fill="none"
+                d="M50,10 a40,40 0 0,1 0,80 a40,40 0 0,1 0,-80"
+              />
+              <path
+                id="curveBottom"
+                fill="none"
+                d="M50,90 a40,40 0 0,1 0,-80 a40,40 0 0,1 0,80"
+              />
+            </defs>
+            <text className="text-sm font-bold font-varela fill-white">
+              <textPath
+                xlinkHref="#curveTop"
+                startOffset="50%"
+                textAnchor="middle"
+              >
+                <tspan
+                  style={{ unicodeBidi: "bidi-override", direction: "rtl" }}
+                >
+                  ארגז הכלים שלי
+                </tspan>
+              </textPath>
+            </text>
+            <text className="text-sm font-bold font-varela fill-white">
+              <textPath
+                xlinkHref="#curveBottom"
+                startOffset="50%"
+                textAnchor="middle"
+              >
+                <tspan
+                  style={{ unicodeBidi: "bidi-override", direction: "rtl" }}
+                >
+                  התוצאות שלך
+                </tspan>
+              </textPath>
+            </text>
+          </svg>
+        </div>
       </div>
     </div>
   );
