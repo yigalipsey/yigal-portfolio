@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import Typewriter from "@/components/fancy/typewriter";
 import heroImage from "../../public/images/hero-yigal.png";
-import { PhoneCall } from "lucide-react";
+import { PhoneCall, ArrowDown } from "lucide-react";
 
 const Hero = () => {
   // טעינת הסקריפט של Lordicon אם לא נטען מראש
@@ -49,15 +49,19 @@ const Hero = () => {
           </h2>
         </div>
         {/* כפתור קריאה לפעולה */}
-        <a
+
+        <button
           href="#projects"
-          className="group relative my-8 rounded-full bg-gradient-to-r from-[#1461ED]/30 via-[#1461ED]/30 via-40% to-[#1461ED]/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 hero-button"
+          className="group relative my-8 rounded-full hover:bg-red-400 bg-gradient-to-r from-[#1461ED]/30 via-[#1461ED]/30 via-40% to-[#1461ED]/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 hero-button"
         >
-          <div className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1461ED] via-[#1461ED] via-40% to-[#1461ED] px-4 py-2 text-white">
-            <PhoneCall className="w-[25px] h-[25px]  text-white" />
+          <div className="relative flex items-center  justify-center gap-2 rounded-full bg-gradient-to-r from-[#1461ED] via-[#1461ED] via-40% to-[#1461ED] px-4 py-2 text-white">
+            <PhoneCall className="w-[25px] h-[25px]   text-white" />
             <span className="text-lg">צור קשר </span>
           </div>
-        </a>
+        </button>
+        <div className=" w-5/6 md:w-[98%]   -mt-14 flex justify-end">
+          <ArrowDown className="w-8 md:w-14 md:h-14 animate-bounce  text-white" />
+        </div>
       </div>
     </section>
   );
