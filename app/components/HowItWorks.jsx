@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const TimelineItem = ({
@@ -13,6 +13,7 @@ const TimelineItem = ({
   customRender,
 }) => {
   const itemRef = useRef(null);
+  const isInView = useInView(itemRef, { once: true, amount: 0.5 });
   const { scrollYProgress } = useScroll({
     target: itemRef,
     offset: ["start end", "end start"],
@@ -25,13 +26,14 @@ const TimelineItem = ({
       ref={itemRef}
       className="flex last:mb-0"
       initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
+      transition={{ duration: 0.5, delay: index * 0.2 }}
     >
       <div
         className={cn(
-          "flex-grow leading-5 text-right",
-          !isLast && "mb-32 pb-20"
+          " w-full leading-5 text-right p-3 md:p-4 rounded-lg",
+          !isLast && "mb-16 md:mb-24 ",
+          "border-2 bg-black border-[#4FF0B7] border-dotted rounded-xl "
         )}
       >
         {customRender ? (
@@ -39,53 +41,56 @@ const TimelineItem = ({
         ) : (
           <>
             <h3
-              className="mb-6 text-4xl font-semibold"
+              className="text-xl md:text-2xl font-semibold mb-2 rubik-bold"
               style={{ color: styles.titleColor }}
             >
               {event.title}
             </h3>
             <p
-              className="mb-6 text-2xl"
+              className="mb-3 text-base md:text-xl"
               style={{ color: styles.descriptionColor }}
             >
               {event.description}
             </p>
-            <span className="text-xl" style={{ color: styles.dateColor }}>
-              {event.date}
-            </span>
           </>
         )}
       </div>
-      <div className="relative mr-16 flex flex-col items-center">
-        <div
-          className={`absolute ${
+      <div className="relative mr-3 md:mr-6 flex flex-col items-center">
+        <motion.div
+          className={cn(
+            "absolute bottom-0 top-0 border-l-4 border-dotted",
             isLast ? "hidden" : "block"
-          } bottom-0 top-0 w-3`}
-          style={{ backgroundColor: styles.lineColor }}
+          )}
+          style={{ borderColor: "#4FF0B7" }}
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: isInView ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: index * 0.2 }}
         >
           <motion.div
-            className="w-full origin-top"
+            className="absolute inset-0 origin-top border-l-4"
             style={{
-              height: "100%",
-              backgroundColor: styles.activeLineColor,
+              borderColor: "#4FF0B7",
               scaleY: scale,
+              borderStyle: "solid",
             }}
           />
-        </div>
+        </motion.div>
         <motion.div
           className="relative z-10 rounded-full border-4"
           style={{
-            width: styles.dotSize,
-            height: styles.dotSize,
-            borderColor: styles.dotColor,
-            backgroundColor: "Background",
-            borderWidth: "8px",
+            width: "2rem",
+            height: "2rem",
+            borderColor: "#4FF0B7",
+            backgroundColor: isActive ? "#4FF0B7" : "transparent",
+            borderWidth: "4px",
           }}
+          initial={{ scale: 0 }}
           animate={{
-            scale: isActive ? 1.2 : 1,
-            backgroundColor: isActive ? styles.activeDotColor : "Background",
-            borderColor: isActive ? styles.activeDotColor : styles.dotColor,
+            scale: isInView ? 1 : 0,
+            backgroundColor: isActive ? "#4FF0B7" : "transparent",
+            borderColor: "#4FF0B7",
           }}
+          transition={{ duration: 0.5, delay: index * 0.2 }}
         />
       </div>
     </motion.div>
@@ -93,34 +98,36 @@ const TimelineItem = ({
 };
 
 const defaultStyles = {
-  lineColor: "#d1d5db",
-  activeLineColor: "#22c55e",
-  dotColor: "#d1d5db",
-  activeDotColor: "#22c55e",
-  dotSize: "4rem",
-  titleColor: "inherit",
-  descriptionColor: "inherit",
-  dateColor: "inherit",
+  dotSize: "2rem",
+  titleColor: "white",
+  descriptionColor: "white",
+  backgroundColor: "black",
+  dateColor: "white",
 };
 
 const DefaultEvents = [
   {
     id: "1",
-    title: "אירוע 1",
-    description: "תיאור 1",
-    date: "01/01/2023",
+    title: "פגישת היכרות",
+    description: "זום עם הלקוח, הבנת צרכים וחזון הפרויקט",
   },
   {
     id: "2",
-    title: "אירוע 2",
-    description: "תיאור 2",
-    date: "01/02/2023",
+    title: "תכנון ראשוני",
+    description: "סקיצות ועיצוב ראשוני, גיבוש כיוון עיצובי",
+    date: "גיבוש קונספט",
   },
   {
     id: "3",
-    title: "אירוע 3",
-    description: "תיאור 3",
-    date: "01/03/2023",
+    title: "פיתוח אתר",
+    description: "מימוש עיצוב, קידוד ראשוני, יישום פונקציונליות",
+    date: "בניית מוצר",
+  },
+  {
+    id: "4",
+    title: "השקה וליטוש",
+    description: "בדיקות סופיות, תיקונים, העלאה לאוויר",
+    date: "גמר פרויקט",
   },
 ];
 
@@ -143,7 +150,7 @@ function HowItWorksPage({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const index = Number.parseInt(entry.target.dataset.index, 10);
-            setActiveIndex(index);
+            setActiveIndex((prevIndex) => Math.max(prevIndex, index));
             onEventActivate?.(events[index]);
           }
         });
@@ -165,21 +172,23 @@ function HowItWorksPage({
     };
   }, [events, onEventActivate]);
 
-  const defaultTitle = "ציר זמן";
-
   return (
     <div
       className={cn(
-        "container mx-auto rounded-lg  px-20 py-32 text-foreground",
+        "    mt-20 font-varela px-4 md:px-8 text-foreground",
         containerClassName
       )}
       dir="rtl"
       ref={containerRef}
     >
-      <h1 className="mb-20 text-6xl font-bold">{title || defaultTitle}</h1>
-      <div className={`relative py-4 max-w-6xl`}>
+      <div className="md:w-4/5 md:mx-auto  md:mb-4 flex justify-start">
+        <h1 className="rubik-bold font-semibold text-[#4FF0B7] text-2xl md:text-4xl">
+          תהליך <span className="text-white">העבודה</span>
+        </h1>
+      </div>
+      <div className={`relative  mx-auto py-4 max-w-6xl`}>
         {events.map((event, index) => (
-          <div key={event.id} data-index={index}>
+          <div className="" key={event.id} data-index={index}>
             <TimelineItem
               event={event}
               isActive={index <= activeIndex}
