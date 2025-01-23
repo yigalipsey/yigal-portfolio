@@ -17,7 +17,7 @@ const AboutMe = () => {
     return () => clearInterval(interval); // מנקה את ה-timer כשלא צריך אותו
   }, []);
 
-  const messages = ["תקשיבו לו", "הוא לא הביא לי חטיף \nלהגיד את זה"];
+  const messages = ["תקשיבו לו", "לא קיבלתי חטיף\n כדי להגיד את זה"];
 
   const bubbleVariants = {
     hidden: {
@@ -56,35 +56,39 @@ const AboutMe = () => {
     >
       {" "}
       <div
-        className={`rounded-2xl relative ${
-          isBottom ? "mr-4 px-8 py-4 bg-white " : "p-4 bg-white"
+        className={`rounded-2xl relative border border-yellow-400  ${
+          isBottom ? "mr-4 p-4 bg-white " : "p-2 bg-white"
         }`}
         style={{
           display: "flex", // לדוגמא, תמיד להשתמש בפלקס
           ...(isBottom
             ? { transform: `rotate(${45}deg)` }
-            : { transform: `rotate(25deg)` }),
+            : { transform: `rotate(15deg)` }),
         }}
       >
         <div
-          className={`absolute w-4 h-4  ${
-            isBottom ? "bg-white" : "  bg-white"
+          className={`absolute   ${
+            isBottom
+              ? "bg-white w-4 h-4 border-b border-r border-yellow-400 "
+              : "  w-4 h-4 border-b border-r border-yellow-400 bg-white"
           }`}
           style={
             isBottom
               ? {
                   left: "70%",
-                  bottom: "-6px",
+                  bottom: "-9px",
                   transform: "translateX(-10%) rotate(45deg)",
                 }
               : {
-                  bottom: "-6px",
-                  left: "50%",
-                  transform: " rotate(45deg)",
+                  bottom: "-8px",
+                  left: "60%",
+                  transform: " rotate(42deg)",
                 }
           }
         />
-        <p className="relative text-black font-varela text-lg text-center min-w-[100px] z-10 whitespace-pre-line">
+        <p
+          className={`relative text-black font-varela text-sm text-center min-w-[100px] max-w-[250px]  whitespace-pre-line `}
+        >
           {children}
         </p>
       </div>
@@ -92,21 +96,21 @@ const AboutMe = () => {
   );
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-[90%]  dotted-background  max-w-4xl mx-auto py-8 p-4 sm:p-8 lg:p-16 relative">
-        <div className="bg-black  md:p-10 p-4 py-6  ">
-          <div className="relative ">
+    <div className="flex justify-center mt-10 md:mt-28 items-center">
+      <div className="w-[90%] dotted-background mx-auto py-4.5 p-4 sm:p-8  relative">
+        <div className="bg-black w-full  p-4 py-6">
+          <div className="relative">
             <div ref={ref} className="relative">
               <motion.div
                 initial="hidden"
                 animate={currentMessageIndex === 1 ? "visible" : "hidden"}
                 variants={bubbleVariants}
-                className="absolute  top-0 left-1/2 -translate-x-1/2"
+                className="absolute top-0 left-[42%] md:left-[47%] -translate-x-1/2"
               >
                 <SpeechBubble rotation={25}>{messages[0]}</SpeechBubble>
               </motion.div>
 
-              <div className="relative mx-auto w-56 aspect-square overflow-hidden rounded-lg border border-white/10">
+              <div className="relative mx-auto w-56 md:w-72 aspect-square overflow-hidden rounded-lg border border-white/10">
                 <img
                   src="/images/about.png"
                   alt="תמונה שלי עם הכלב שלי"
@@ -119,28 +123,28 @@ const AboutMe = () => {
                 animate={isInView ? "visible" : "hidden"}
                 variants={bubbleVariants}
                 transition={{ delay: 1.5 }}
-                className={`absolute  ${
+                className={`absolute ${
                   currentMessageIndex === 1 && "hidden"
-                }   bottom-32 left-[40%] translate-y-1/2`}
+                } bottom-32 left-[40%] md:left-[47%] translate-y-1/2`}
               >
                 <SpeechBubble isBottom>{messages[1]}</SpeechBubble>
               </motion.div>
             </div>
           </div>
 
-          <div className="flex justify-center mt-6  items-center  ">
-            <div dir="rtl" className=" max-w-2xl text-center px-4">
-              <h1 className="font-varela text-xl font-bold text-white">
+          <div className="flex justify-center mt-6 items-center">
+            <div dir="rtl" className="max-w-2xl text-center px-4 md:px-8">
+              <h1 className="font-varela text-xl md:text-2xl font-bold text-white">
                 קצת עליי
               </h1>
-              <h2 className="font-varela text-3xl mb-2 font-light text-[#F3E618]">
+              <h2 className="font-varela text-3xl md:text-4xl mb-2 font-light text-[#F3E618]">
                 יגאל ליפסי
               </h2>
 
-              <div className="space-y-4 font-varela text-sm leading-relaxed text-gray-300">
+              <div className="space-y-4 font-varela text-sm md:text-lg leading-relaxed text-gray-300">
                 <p>
-                  הנדסאי תוכנה מצטיין ובוגר מכללת סינגאלובסקי בהצטיינות, עם
-                  תשוקה לטכנולוגיה וליצירת פתרונות דיגיטליים חדשניים.
+                  הנדסאי תוכנה בוגר מכללת סינגאלובסקי בהצטיינות, עם תשוקה
+                  לטכנולוגיה וליצירת פתרונות דיגיטליים חדשניים.
                 </p>
                 <p>
                   אני מתמחה בבניית אתרים ואפליקציות עם דגש על{" "}
