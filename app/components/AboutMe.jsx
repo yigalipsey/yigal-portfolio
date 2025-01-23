@@ -1,11 +1,9 @@
 "use client";
 import React, { useRef } from "react";
 import { useState, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
 
 const AboutMe = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, threshold: 0.9 });
 
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
@@ -49,28 +47,25 @@ const AboutMe = () => {
   };
 
   const SpeechBubble = ({ children, isBottom = false, rotation = 0 }) => (
-    <motion.div
-      className={`relative inline-block mt-12`}
-      variants={pulseVariants}
-      animate="pulse"
+    <div
+      className={`relative animate-[pulse-scale_1s_ease-in-out_infinite] inline-block mt-12`}
     >
-      {" "}
       <div
-        className={`rounded-2xl relative border border-yellow-400  ${
-          isBottom ? "mr-4 p-4 bg-white " : "p-2 bg-white"
+        className={`rounded-2xl relative border border-yellow-400 ${
+          isBottom ? "mr-4 p-4 bg-white" : "p-2 bg-white"
         }`}
         style={{
-          display: "flex", // לדוגמא, תמיד להשתמש בפלקס
+          display: "flex",
           ...(isBottom
-            ? { transform: `rotate(${45}deg)` }
+            ? { transform: `rotate(45deg)` }
             : { transform: `rotate(15deg)` }),
         }}
       >
         <div
-          className={`absolute   ${
+          className={`absolute ${
             isBottom
-              ? "bg-white w-4 h-4 border-b border-r border-yellow-400 "
-              : "  w-4 h-4 border-b border-r border-yellow-400 bg-white"
+              ? "bg-white w-4 h-4 border-b border-r border-yellow-400"
+              : "w-4 h-4 border-b border-r border-yellow-400 bg-white"
           }`}
           style={
             isBottom
@@ -82,33 +77,28 @@ const AboutMe = () => {
               : {
                   bottom: "-8px",
                   left: "60%",
-                  transform: " rotate(42deg)",
+                  transform: "rotate(42deg)",
                 }
           }
         />
-        <p
-          className={`relative text-black font-varela text-sm text-center min-w-[100px] max-w-[250px]  whitespace-pre-line `}
-        >
+        <p className="relative text-black font-varela text-sm text-center min-w-[100px] max-w-[250px] whitespace-pre-line">
           {children}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 
   return (
-    <div className="flex justify-center mt-10 md:mt-28 items-center">
-      <div className="w-[90%] dotted-background mx-auto py-4.5 p-4 sm:p-8  relative">
-        <div className="bg-black w-full  p-4 py-6">
+    <div className="flex justify-center mt-10 md:mt-28 items-center  bg-cover bg-center bg-no-repeat">
+      <div className="w-[90%] dotted-background mx-auto py-4.5 p-4 sm:p-8 relative">
+        <div className="bg-black  w-full p-4 py-6">
           <div className="relative">
             <div ref={ref} className="relative">
-              <motion.div
-                initial="hidden"
-                animate={currentMessageIndex === 1 ? "visible" : "hidden"}
-                variants={bubbleVariants}
-                className="absolute top-0 left-[42%] md:left-[47%] -translate-x-1/2"
-              >
-                <SpeechBubble rotation={25}>{messages[0]}</SpeechBubble>
-              </motion.div>
+              {currentMessageIndex === 1 && (
+                <div className="absolute top-0 left-[62%] md:left-[52%] -translate-x-1/2">
+                  <SpeechBubble rotation={25}>{messages[0]}</SpeechBubble>
+                </div>
+              )}
 
               <div className="relative mx-auto w-56 md:w-72 aspect-square overflow-hidden rounded-lg border border-white/10">
                 <img
@@ -118,22 +108,21 @@ const AboutMe = () => {
                 />
               </div>
 
-              <motion.div
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={bubbleVariants}
-                transition={{ delay: 1.5 }}
+              <div
                 className={`absolute ${
                   currentMessageIndex === 1 && "hidden"
-                } bottom-32 left-[40%] md:left-[47%] translate-y-1/2`}
+                } -top-24 md:-top-16 left-[40%] md:left-[47%] translate-y-1/2`}
               >
                 <SpeechBubble isBottom>{messages[1]}</SpeechBubble>
-              </motion.div>
+              </div>
             </div>
           </div>
 
-          <div className="flex justify-center mt-6 items-center">
-            <div dir="rtl" className="max-w-2xl text-center px-4 md:px-8">
+          <div className="relative flex justify-center mt-6 items-center w-full">
+            <div
+              dir="rtl"
+              className="w-full max-w-4xl text-center px-4 md:px-8 lg:px-16"
+            >
               <h1 className="font-varela text-xl md:text-2xl font-bold text-white">
                 קצת עליי
               </h1>
