@@ -17,6 +17,7 @@ export default function Home() {
       <ServicesSection />
       <ProjectsSection />
       <AboutMe />
+      <HowItWorks />
       <Footer />
     </div>
   );

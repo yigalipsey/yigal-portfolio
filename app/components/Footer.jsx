@@ -7,7 +7,7 @@ const Footer = () => {
     <div className="w-full bg-[#efefef] items-center justify-center h-full  ">
       {/* add relative positioning to the main content */}
       <div className="relative  w-full z-10 text-2xl  bg-grainy md:text-7xl font-bold uppercase flex justify-center items-center  text-white whitespace-pre">
-        <HowItWorksPage />
+        {/* <HowItWorksPage /> */}
       </div>
 
       {/* Sticky footer. The only important thing here is the z-index, the sticky position and the bottom value */}
