@@ -89,7 +89,7 @@ const AboutMe = () => {
   );
 
   return (
-    <div className="flex justify-center mt-10 md:mt-28 items-center  bg-cover bg-center bg-no-repeat">
+    <div className="flex justify-center mt-10 md:mb-28 mb-10 items-center  bg-cover bg-center bg-no-repeat">
       <div className="w-[90%] dotted-background mx-auto py-4.5 p-4 sm:p-8 relative">
         <div className="bg-black  w-full p-4 py-6">
           <div className="relative">

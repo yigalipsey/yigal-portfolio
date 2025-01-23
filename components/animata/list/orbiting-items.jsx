@@ -13,14 +13,14 @@ import {
 } from "lucide-react";
 
 export const testOrbitingItems = [
-  <Github key="github" className="h-6 w-6" />,
-  <Twitter key="twitter" className="h-6 w-6" />,
-  <Code key="code" className="h-6 w-6" />,
-  <Package2 key="tailwind" className="h-6 w-6" />,
-  <Framer key="framer" className="h-6 w-6" />,
-  <Apple key="apple" className="h-6 w-6" />,
-  <Figma key="figma" className="h-6 w-6" />,
-  <Cpu key="cpu" className="h-6 w-6" />,
+  <Github key="github" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Twitter key="twitter" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Code key="code" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Package2 key="tailwind" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Framer key="framer" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Apple key="apple" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Figma key="figma" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <Cpu key="cpu" className="h-6 w-6 stroke-[#4FF0B7]" />,
 ];
 
 const calculateItemStyle = ({ index, radius, totalItems, angle }) => {
@@ -73,12 +73,12 @@ export default function OrbitingItems({
         )}
         style={{ transform: `rotate(${angle}deg)` }}
       >
-        <div className="absolute h-full w-full rounded-full border-2 border-gray-500" />
+        <div className="absolute h-full w-full rounded-full border-2 border-white" />
         {items.map((item, index) => {
           return (
             <div
               key={index}
-              className="absolute flex h-12 w-12 items-center justify-center rounded-full bg-gray-200"
+              className="absolute flex h-12 w-12 items-center justify-center rounded-full bg-black border-2 border-[#4FF0B7]"
               style={calculateItemStyle({
                 index,
                 radius,
@@ -110,30 +110,45 @@ export default function OrbitingItems({
                 d="M50,90 a40,40 0 0,1 0,-80 a40,40 0 0,1 0,80"
               />
             </defs>
-            <text className="text-sm font-bold font-varela fill-white">
+            <text className="text-base font-varela   fill-white">
               <textPath
                 xlinkHref="#curveTop"
                 startOffset="50%"
                 textAnchor="middle"
               >
-                <tspan
-                  style={{ unicodeBidi: "bidi-override", direction: "rtl" }}
-                >
-                  ארגז הכלים שלי
-                </tspan>
+                <tspan>א</tspan>
+                <tspan>ר</tspan>
+                <tspan>ג</tspan>
+                <tspan>ז</tspan>
+                <tspan> </tspan>
+                <tspan>ה</tspan>
+                <tspan>כ</tspan>
+                <tspan>ל</tspan>
+                <tspan>י</tspan>
+                <tspan>ם</tspan>
+                <tspan> </tspan>
+                <tspan>ש</tspan>
+                <tspan>ל</tspan>
+                <tspan>י</tspan>
               </textPath>
             </text>
-            <text className="text-sm font-bold font-varela fill-white">
+            <text className="text-base font-varela fill-white">
               <textPath
                 xlinkHref="#curveBottom"
                 startOffset="50%"
                 textAnchor="middle"
               >
-                <tspan
-                  style={{ unicodeBidi: "bidi-override", direction: "rtl" }}
-                >
-                  התוצאות שלך
-                </tspan>
+                <tspan>ה</tspan>
+                <tspan>ת</tspan>
+                <tspan>ו</tspan>
+                <tspan>צ</tspan>
+                <tspan>א</tspan>
+                <tspan>ו</tspan>
+                <tspan>ת</tspan>
+                <tspan> </tspan>
+                <tspan>ש</tspan>
+                <tspan>ל</tspan>
+                <tspan>ך</tspan>
               </textPath>
             </text>
           </svg>
