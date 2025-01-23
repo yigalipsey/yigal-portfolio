@@ -175,7 +175,7 @@ function HowItWorksPage({
   return (
     <div
       className={cn(
-        "    mt-20 font-varela px-4 md:px-8 text-foreground",
+        "   mb-20   mt-20 font-varela px-4 md:px-8 text-foreground",
         containerClassName
       )}
       dir="rtl"

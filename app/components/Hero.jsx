@@ -52,7 +52,7 @@ const Hero = () => {
 
         <button
           href="#projects"
-          className="group relative my-8 rounded-full hover:bg-red-400 bg-gradient-to-r from-[#1461ED]/30 via-[#1461ED]/30 via-40% to-[#1461ED]/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 hero-button"
+          className="group relative my-8 rounded-full hover:bg-white bg-gradient-to-r from-[#1461ED]/30 via-[#1461ED]/30 via-40% to-[#1461ED]/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 hero-button"
         >
           <div className="relative flex items-center  justify-center gap-2 rounded-full bg-gradient-to-r from-[#1461ED] via-[#1461ED] via-40% to-[#1461ED] px-4 py-2 text-white">
             <PhoneCall className="w-[25px] h-[25px]   text-white" />

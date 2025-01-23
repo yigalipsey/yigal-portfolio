@@ -8,6 +8,8 @@ const NavBar = () => {
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
 
+  console.log("isOpen", isOpen);
+
   return (
     <div style={container}>
       <motion.nav
@@ -20,7 +22,7 @@ const NavBar = () => {
         <motion.div
           style={background}
           variants={sidebarVariants}
-          className="bg-grainy-blue"
+          className="bg-grainy-blue "
         />
         <motion.div
           style={dottedBackground}

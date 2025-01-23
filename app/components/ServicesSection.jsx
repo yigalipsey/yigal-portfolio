@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
 
 const ServicesSection = () => {
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
   // טעינת הסקריפט של Lordicon
   useEffect(() => {
     const script = document.createElement("script");
@@ -11,18 +13,30 @@ const ServicesSection = () => {
     document.body.appendChild(script);
   }, []);
 
-  // אנימציה - fade-in + slide-up
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
+  // Intersection Observer לאנימציה
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <section className="w-full mb-10">
+    <section className="w-full mb-10" ref={sectionRef}>
       <div className="w-full mb-2 flex justify-end">
         <h1 className="rubik-bold mr-8 md:mr-32 md:mb-4 font-semibold text-[#9911ff] text-3xl md:text-5xl">
           השירותים <span className="text-white">שלי</span>
@@ -50,16 +64,15 @@ const ServicesSection = () => {
               icon: "https://cdn.lordicon.com/wbthjkyu.json",
             },
           ].map((service, index) => (
-            <motion.div
+            <div
               key={index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeInUp}
-              className="rounded-xl overflow-hidden relative border-2 border-[#9911ff] bg-services-dots opacity-90 text-right p-4"
+              className={`rounded-xl overflow-hidden relative border-2 border-[#9911ff] bg-services-dots opacity-90 text-right p-4 transform transition-all duration-700 ${
+                isVisible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-10 opacity-0"
+              }`}
             >
               <div className="relative flex flex-col items-end">
-                {/* אייקון Lordicon */}
                 <div className="flex justify-end w-full">
                   <lord-icon
                     src={service.icon}
@@ -76,7 +89,7 @@ const ServicesSection = () => {
                   {service.description}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
