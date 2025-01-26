@@ -1,65 +1,94 @@
 "use client";
-import React, { useRef } from "react";
-import { useState, useEffect } from "react";
+
+import React, { useRef, useState, useEffect } from "react";
+
+function useClientEffect(effect, deps) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      return effect();
+    }
+  }, [isClient, effect, ...(deps || [])]);
+}
 
 const AboutMe = () => {
-  const ref = useRef(null);
+  const topSvgRef = useRef(null);
+  const bottomSvgRef = useRef(null);
+  const animationTriggerRef = useRef(null);
+  const topTriggerRef = useRef(null);
+  const messageIndexRef = useRef(0);
+  const [, forceUpdate] = useState({});
 
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [rocketState, setRocketState] = useState("onEarth");
+  const [rocketPosition, setRocketPosition] = useState({ x: 0, y: 0 });
+  const [starState, setStarState] = useState({
+    sizes: {
+      star4: 20,
+      star5: 30,
+      star6: 40,
+    },
+    rotating: false,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentMessageIndex((prevIndex) => (prevIndex === 0 ? 1 : 0));
+      messageIndexRef.current = messageIndexRef.current === 0 ? 1 : 0;
+      forceUpdate({});
     }, 2500);
 
-    return () => clearInterval(interval); // מנקה את ה-timer כשלא צריך אותו
+    return () => clearInterval(interval);
   }, []);
+
+  useClientEffect(() => {
+    const bottomObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && rocketState === "onEarth") {
+          moveRocket();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    const topObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && rocketState === "onMoon") {
+          returnRocket();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (animationTriggerRef.current) {
+      bottomObserver.observe(animationTriggerRef.current);
+    }
+
+    if (topTriggerRef.current) {
+      topObserver.observe(topTriggerRef.current);
+    }
+
+    return () => {
+      if (animationTriggerRef.current) {
+        bottomObserver.unobserve(animationTriggerRef.current);
+      }
+      if (topTriggerRef.current) {
+        topObserver.unobserve(topTriggerRef.current);
+      }
+    };
+  }, [rocketState]);
 
   const messages = ["תקשיבו לו", "לא קיבלתי חטיף\n כדי להגיד את זה"];
 
-  const bubbleVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      scale: 0.8,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-      },
-    },
-  };
-
-  const pulseVariants = {
-    pulse: {
-      scale: [1, 1.05, 1],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        repeatType: "reverse",
-      },
-    },
-  };
-
-  const SpeechBubble = ({ children, isBottom = false, rotation = 0 }) => (
-    <div
-      className={`relative animate-[pulse-scale_1s_ease-in-out_infinite] inline-block mt-12`}
-    >
+  const SpeechBubble = ({ children, isBottom = false }) => (
+    <div className="relative animate-[pulse-scale_1s_ease-in-out_infinite] inline-block mt-12">
       <div
         className={`rounded-2xl relative border border-yellow-400 ${
           isBottom ? "mr-4 p-4 bg-white" : "p-2 bg-white"
-        }`}
-        style={{
-          display: "flex",
-          ...(isBottom
-            ? { transform: `rotate(45deg)` }
-            : { transform: `rotate(15deg)` }),
-        }}
+        } `}
       >
         <div
           className={`absolute ${
@@ -67,19 +96,13 @@ const AboutMe = () => {
               ? "bg-white w-4 h-4 border-b border-r border-yellow-400"
               : "w-4 h-4 border-b border-r border-yellow-400 bg-white"
           }`}
-          style={
-            isBottom
-              ? {
-                  left: "70%",
-                  bottom: "-9px",
-                  transform: "translateX(-10%) rotate(45deg)",
-                }
-              : {
-                  bottom: "-8px",
-                  left: "60%",
-                  transform: "rotate(42deg)",
-                }
-          }
+          style={{
+            left: isBottom ? "70%" : "60%",
+            bottom: isBottom ? "-9px" : "-8px",
+            transform: isBottom
+              ? "translateX(-10%) rotate(45deg)"
+              : "rotate(42deg)",
+          }}
         />
         <p className="relative text-black font-varela text-sm text-center min-w-[100px] max-w-[250px] whitespace-pre-line">
           {children}
@@ -88,29 +111,132 @@ const AboutMe = () => {
     </div>
   );
 
+  const getStarStyle = (size, top, right, bottom, left, index) => ({
+    position: "absolute",
+    width: `${size}px`,
+    height: `${size}px`,
+    top,
+    right,
+    bottom,
+    left,
+    background:
+      "radial-gradient(circle, rgba(251, 239, 63, 1) 0%, rgba(255, 253, 212, 1) 100%)",
+    clipPath:
+      "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+    transition: "all 3.4s ease",
+    animation: starState.rotating
+      ? `rotate ${3 + index * 2}s normal linear infinite`
+      : "none",
+  });
+
+  const moveRocket = () => {
+    if (topSvgRef.current && bottomSvgRef.current) {
+      const topRect = topSvgRef.current.getBoundingClientRect();
+      const bottomRect = bottomSvgRef.current.getBoundingClientRect();
+
+      const x = topRect.left - bottomRect.left;
+      const y = topRect.top - bottomRect.top;
+
+      setRocketPosition({ x, y });
+      setRocketState("moving");
+      setStarState({
+        sizes: {
+          star4: 30,
+          star5: 45,
+          star6: 55,
+        },
+        rotating: true,
+      });
+
+      setTimeout(() => {
+        setRocketState("onMoon");
+      }, 1000);
+    }
+  };
+
+  const returnRocket = () => {
+    setRocketState("returning");
+    setRocketPosition({ x: 0, y: 0 });
+    setStarState({
+      sizes: {
+        star4: 20,
+        star5: 30,
+        star6: 40,
+      },
+      rotating: false,
+    });
+
+    setTimeout(() => {
+      setRocketState("onEarth");
+    }, 1000);
+  };
+
+  const openWhatsApp = () => {
+    window.open("https://wa.me/+972YOUR_PHONE_NUMBER", "_blank");
+  };
+
   return (
-    <div className="flex justify-center mt-10 md:mb-28 mb-10 items-center  bg-cover bg-center bg-no-repeat">
+    <div className="flex relative justify-center mt-10 md:mb-28 mb-10 items-center bg-cover bg-center bg-no-repeat">
+      <div ref={topTriggerRef} className="h-1 w-full absolute top-0" />
       <div className="w-[90%] dotted-background mx-auto py-4.5 p-4 sm:p-8 relative">
-        <div className="bg-black  w-full p-4 py-6">
+        <div className="bg-black w-full p-4 py-6">
           <div className="relative">
-            <div ref={ref} className="relative">
-              {currentMessageIndex === 1 && (
+            <div className="relative">
+              {messageIndexRef.current === 1 && (
                 <div className="absolute top-0 left-[62%] md:left-[52%] -translate-x-1/2">
-                  <SpeechBubble rotation={25}>{messages[0]}</SpeechBubble>
+                  <SpeechBubble>{messages[0]}</SpeechBubble>
                 </div>
               )}
 
-              <div className="relative mx-auto w-56 md:w-72 aspect-square overflow-hidden rounded-lg border border-white/10">
+              <div
+                style={getStarStyle(
+                  starState.sizes.star4,
+                  "4%",
+                  "5px",
+                  undefined,
+                  undefined,
+                  1
+                )}
+              />
+              <div
+                style={getStarStyle(
+                  starState.sizes.star5,
+                  undefined,
+                  undefined,
+                  "24%",
+                  undefined,
+                  2
+                )}
+              />
+              <div
+                style={getStarStyle(
+                  starState.sizes.star6,
+                  undefined,
+                  "25%",
+                  "20%",
+                  undefined,
+                  3
+                )}
+              />
+
+              <div className="relative mx-auto w-56 md:w-72 aspect-square rounded-lg ">
                 <img
                   src="/images/about.png"
                   alt="תמונה שלי עם הכלב שלי"
                   className="w-full h-full object-cover"
                 />
+                <svg
+                  ref={topSvgRef}
+                  className="absolute -bottom-[40px] -right-[10px] w-12 h-12 text-white fill-current"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M 12.993 6.552 c 0 -2.259 -0.795 -4.33 -2.117 -5.955 C 15.66 1.042 19.406 5.07 19.406 9.98 c 0 5.207 -4.211 9.426 -9.406 9.426 c -2.94 0 -5.972 -1.354 -7.696 -3.472 c 0.289 0.026 0.987 0.044 1.283 0.044 C 8.781 15.979 12.993 11.759 12.993 6.552 z" />
+                </svg>
               </div>
 
               <div
                 className={`absolute ${
-                  currentMessageIndex === 1 && "hidden"
+                  messageIndexRef.current === 1 ? "hidden" : ""
                 } -top-24 md:-top-16 left-[40%] md:left-[47%] translate-y-1/2`}
               >
                 <SpeechBubble isBottom>{messages[1]}</SpeechBubble>
@@ -123,12 +249,16 @@ const AboutMe = () => {
               dir="rtl"
               className="w-full max-w-4xl text-center px-4 md:px-8 lg:px-16"
             >
-              <h1 className="font-varela text-xl md:text-2xl font-bold text-white">
-                קצת עליי
-              </h1>
-              <h2 className="font-varela text-3xl md:text-4xl mb-2 font-light text-[#F3E618]">
-                יגאל ליפסי
-              </h2>
+              <div className="flex justify-center">
+                <h1 className="font-varela text-xl md:text-2xl font-bold text-white">
+                  קצת עליי
+                </h1>
+              </div>
+              <div>
+                <h2 className="font-varela text-3xl md:text-4xl mb-2 font-light text-[#F3E618]">
+                  יגאל ליפסי
+                </h2>
+              </div>
 
               <div className="space-y-4 font-varela text-sm md:text-lg leading-relaxed text-gray-300">
                 <p>
@@ -149,11 +279,49 @@ const AboutMe = () => {
                   מחפשים אתר שירגיש חלק, אינטואיטיבי ומרשים? בואו נבנה משהו בלתי
                   נשכח.
                 </p>
+
+                <div className="flex relative justify-center mt-3">
+                  <svg
+                    ref={bottomSvgRef}
+                    className={`w-12 h-12 absolute left-[5%] bottom-4 text-white rotate-12 fill-current transition-all duration-1000 ease-in-out`}
+                    viewBox="48.0129 48.1783 416 415.6"
+                    style={{
+                      transform:
+                        rocketState !== "onEarth"
+                          ? `translate(${rocketPosition.x - 15}px, ${
+                              rocketPosition.y
+                            }px) scale(0.7) rotate(${
+                              rocketState === "returning" ? "131deg" : "-49deg"
+                            })`
+                          : "none",
+                      transition: "all 1s ease-in-out",
+                    }}
+                  >
+                    <path d="M461.81,53.81a4.4,4.4,0,0,0-3.3-3.39c-54.38-13.3-180,34.09-248.13,102.17a294.9,294.9,0,0,0-33.09,39.08c-21-1.9-42-.3-59.88,7.5-50.49,22.2-65.18,80.18-69.28,105.07a9,9,0,0,0,9.8,10.4l81.07-8.9a180.29,180.29,0,0,0,1.1,18.3,18.15,18.15,0,0,0,5.3,11.09l31.39,31.39a18.15,18.15,0,0,0,11.1,5.3,179.91,179.91,0,0,0,18.19,1.1l-8.89,81a9,9,0,0,0,10.39,9.79c24.9-4,83-18.69,105.07-69.17,7.8-17.9,9.4-38.79,7.6-59.69a293.91,293.91,0,0,0,39.19-33.09C427.82,233.76,474.91,110.9,461.81,53.81ZM298.66,213.67a42.7,42.7,0,1,1,60.38,0A42.65,42.65,0,0,1,298.66,213.67Z" />
+                  </svg>
+                  <button
+                    className="bg-black border border-1 mt-3 border-[#F3E618] hover:text-[#F3E618] font-bold py-2 px-4 rounded"
+                    onClick={openWhatsApp}
+                  >
+                    תבנה לי אתר שמעיף לחלל{" "}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div ref={animationTriggerRef} className="h-1 w-full absolute bottom-0" />
+      <style jsx>{`
+        @keyframes rotate {
+          from {
+            transform: rotate(45deg);
+          }
+          to {
+            transform: rotate(50deg);
+          }
+        }
+      `}</style>
     </div>
   );
 };
