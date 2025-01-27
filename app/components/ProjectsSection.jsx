@@ -15,7 +15,7 @@ const projects = [
     title: "Yoad lipsey",
     description: "אתר תדמית",
     image: { src: "/images/yoad.png", alt: "Yoad Lipsey Website" },
-    url: "https://smartsalesil.com",
+    url: "https://www.yoadlipsey.com/",
   },
   {
     number: "03",
