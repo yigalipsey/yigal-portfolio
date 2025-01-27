@@ -1,26 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { cn } from "../../../lib/utils";
-import {
-  Github,
-  Twitter,
-  Code,
-  Package2,
-  Framer,
-  Apple,
-  Figma,
-  Cpu,
-} from "lucide-react";
+import { Github, Figma } from "lucide-react";
+import { SiNextdotjs, SiNodedotjs, SiReact, SiMongodb } from "react-icons/si"; // Simple Icons
+import { FaPython, FaJava } from "react-icons/fa"; // Font Awesome
 
 export const testOrbitingItems = [
   <Github key="github" className="h-6 w-6 stroke-[#4FF0B7]" />,
-  <Twitter key="twitter" className="h-6 w-6 stroke-[#4FF0B7]" />,
-  <Code key="code" className="h-6 w-6 stroke-[#4FF0B7]" />,
-  <Package2 key="tailwind" className="h-6 w-6 stroke-[#4FF0B7]" />,
-  <Framer key="framer" className="h-6 w-6 stroke-[#4FF0B7]" />,
-  <Apple key="apple" className="h-6 w-6 stroke-[#4FF0B7]" />,
   <Figma key="figma" className="h-6 w-6 stroke-[#4FF0B7]" />,
-  <Cpu key="cpu" className="h-6 w-6 stroke-[#4FF0B7]" />,
+  <SiNextdotjs key="nextjs" className="h-6 w-6 text-[#4FF0B7]" />,
+  <SiNodedotjs key="nodejs" className="h-6 w-6 text-[#4FF0B7]" />,
+  <SiReact key="react" className="h-6 w-6 text-[#4FF0B7]" />,
+  <SiMongodb key="mongodb" className="h-6 w-6 text-[#4FF0B7]" />,
+  <FaPython key="python" className="h-6 w-6 text-[#4FF0B7]" />,
+  <FaJava key="java" className="h-6 w-6 text-[#4FF0B7]" />,
 ];
 
 const calculateItemStyle = ({ index, radius, totalItems, angle }) => {
@@ -110,7 +103,7 @@ export default function OrbitingItems({
                 d="M50,90 a40,40 0 0,1 0,-80 a40,40 0 0,1 0,80"
               />
             </defs>
-            <text className="text-base font-varela   fill-white">
+            <text className="text-base font  rubik-bold fill-white">
               <textPath
                 xlinkHref="#curveTop"
                 startOffset="50%"
@@ -132,7 +125,7 @@ export default function OrbitingItems({
                 <tspan>י</tspan>
               </textPath>
             </text>
-            <text className="text-base font-varela fill-white">
+            <text className="text-base rubik-bold fill-white">
               <textPath
                 xlinkHref="#curveBottom"
                 startOffset="50%"

@@ -31,14 +31,14 @@ export default function ProjectCard({
 
   return (
     <div
-      className={`relative  mt-8  md:mt-10  w-full flex flex-col mobile:flex-col md:flex-row items-center justify-between p-6 rounded-lg overflow-visible ${
+      className={`relative  mb-10  md:mt-10  w-full flex flex-col mobile:flex-col md:flex-row items-center justify-between p-6 rounded-lg overflow-visible ${
         isRight ? "md:flex-row-reverse" : ""
       }`}
     >
       {/* צד שמאל: תמונה עם TiltedCover ומספר */}
       <div className="w-full md:w-1/3 flex justify-start items-center relative mb-4 md:mb-0">
         <span
-          className={`absolute z-10 text-outline font-bold opacity-30
+          className={`absolute z-10 text-outline  opacity-30
                    mobile:text-[80px] mobile:top-[-78px]  
                    md:text-[180px] md:top-1/2 md:-translate-y-1/2
                      ${
@@ -83,15 +83,15 @@ export default function ProjectCard({
         `}
       >
         <h2
-          className={`text-xl -mt-5 md:-mt-0 md:text-5xl font-bold text-[#ff0088] ${
-            isRight ? "mobile:mr-3" : "mobile:ml-5"
+          className={`text-xl -mt-2 md:-mt-0 md:text-5xl font-bold text-[#bdb9bb] ${
+            isRight ? "mobile:mr-1" : "mobile:ml-3"
           }`}
         >
           {title}
         </h2>
         <p
-          className={`text-3xl md:mt-1 text-gray-300 mobile:text-sm ${
-            isRight ? "mobile:mr-3" : "mobile:ml-5"
+          className={`text-3xl md:mt-1 text-[#ff0088]  mobile:text-sm ${
+            isRight ? "mobile:mr-1" : "mobile:ml-3"
           }`}
         >
           {description}
@@ -108,8 +108,8 @@ function TiltedCover({ image, direction = "right" }) {
   return (
     <div
       className={`relative w-[400px] h-[250px] overflow-visible rounded-xl bg-white shadow-lg 
-            mobile:w-[350px] mobile:h-[220px] border border-gray-300 border-8 cursor-pointer
-            hover:border-[#ff0088] transition-all duration-500 ease-out
+            mobile:w-[350px] mobile:h-[220px] border border-[#bdb9bb] border-8 cursor-pointer
+             transition-all duration-500 ease-out
             hover:scale-105 z-50
             `}
       style={{
@@ -122,7 +122,7 @@ function TiltedCover({ image, direction = "right" }) {
         alt={image.alt}
         width={400}
         height={250}
-        className="w-full h-full object-cover"
+        className="w-full h-full hover:w-[110%] object-cover"
         priority
       />
     </div>

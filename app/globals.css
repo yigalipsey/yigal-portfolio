@@ -14,22 +14,36 @@
   border-radius: 5rem;
   transition: 0.5s;
   animation: gradient_301 5s ease infinite;
-  border: double 4px transparent; /* בורדר שקוף */
+  border: double 4px #555555; /* בורדר אפור כהה */
   background-image: linear-gradient(#000000, #000000),
-    linear-gradient(317deg, #ffffff, #000000); /* אפקט לבן עם שחור הפוך */
+    linear-gradient(317deg, #ffffff, #000000);
   background-origin: border-box;
   background-clip: content-box, border-box;
   transform: scale(1.1); /* אפקט הגדלה */
 }
 
+.btn:hover {
+  border-color: #f3e618; /* בורדר צהוב בעת מעבר עכבר */
+  transform: scale(1.15); /* אפקט הגדלה קל יותר */
+}
+
+.btn:active {
+  border-color: #f3e618;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.btn:active .circle {
+  background: #f3e618; /* צבע המעגל הופך לצהוב */
+}
+
 strong {
   z-index: 2;
-  font-family: "Varela", sans-serif; /* פונט Varela */
-  font-size: 16px;
+
   letter-spacing: 3px;
   font-weight: 400; /* עובי דק יותר */
   color: #ffffff; /* טקסט לבן */
-  text-shadow: 0 0 4px rgb(0, 0, 0);
 }
 
 #container-stars {
@@ -77,17 +91,6 @@ strong {
 
 .btn:hover {
   transform: scale(1.1); /* אפקט הגדלה */
-}
-
-.btn:active {
-  border: double 4px #fe53bb;
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  animation: none;
-}
-
-.btn:active .circle {
-  background: #fe53bb;
 }
 
 #stars {
@@ -201,9 +204,9 @@ strong {
   font-weight: bold;
   font-size: 250px; /* התאמה לגודל הרצוי */
 
-  /* נקודות חדות עם ריווח מדויק */
-  background: radial-gradient(circle, #ff0088 1px, rgba(255, 0, 136, 0) 1px),
-    radial-gradient(circle, #ff0088 1px, rgba(255, 0, 136, 0) 1px);
+  /* נקודות לבנות בלבד עם ריווח מדויק */
+  background: radial-gradient(circle, #ffffff 1px, rgba(255, 255, 255, 0) 1px),
+    radial-gradient(circle, #ffffff 1px, rgba(255, 255, 255, 0) 1px);
   background-size: 6px 6px, 6px 6px; /* גודל קטן יותר */
   background-position: 0px 0px, 3px 3px; /* חפיפה כדי להוסיף חדות */
   background-blend-mode: normal; /* מונע טשטוש */
@@ -211,7 +214,7 @@ strong {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent; /* שקיפות טקסט */
-  -webkit-text-stroke: 2px rgba(255, 0, 136, 0.8);
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.8); /* גבול לבן */
 }
 
 /* 🎨 רקע גרעיני (כחול כהה) */

@@ -7,7 +7,7 @@ const projects = [
     number: "01",
     title: "Smart sales",
     description: "דף נחיתה",
-    image: { src: "/images/sm.png", alt: "Smart sales" },
+    image: { src: "/images/smartsale.png", alt: "Smart sales" },
     url: "https://www.smartsalesil.com",
   },
   {
@@ -46,7 +46,7 @@ export default function ProjectsSection() {
       id="projects"
       className="flex mt-20 relative flex-col w-full md:w-5/6 items-center justify-center mx-auto min-h-screen mobile:w-full mobile:p-0"
     >
-      <div className="w-full  md:mb-0 flex justify-end">
+      <div className="w-full  mb-8 md:-mb-8 flex justify-end">
         <h1 className="rubik-bold mr-8 md:mr-2 font-semibold text-[#ff0088] text-3xl md:text-5xl">
           פרוייקטים <span className="text-white">אחרונים</span>
         </h1>

@@ -41,7 +41,7 @@ const AboutMe = () => {
   }, []);
 
   useClientEffect(() => {
-    if (animationCompleted) return; // Stop further animations if completed
+    if (animationCompleted) return;
 
     const bottomObserver = new IntersectionObserver(
       ([entry]) => {
@@ -70,7 +70,7 @@ const AboutMe = () => {
     <div className="relative animate-[pulse-scale_1s_ease-in-out_infinite] inline-block mt-12">
       <div
         className={`rounded-2xl relative border border-yellow-400 ${
-          isBottom ? "mr-4 p-4 bg-white" : "p-2 bg-white"
+          isBottom ? "mr-4 p-4 bg-white  rotate-45" : "p-2 bg-white"
         } `}
       >
         <div
@@ -237,13 +237,17 @@ const AboutMe = () => {
                     }}
                   ></lord-icon>
                   <button
-                    onClick={openWhatsApp}
+                    onClick={() =>
+                      window.open(
+                        "https://wa.me/972533350910?text=שלום%20יגאל,%20אני%20מתעניין%20בשירותי%20פיתוח%20אתר%20או%20אפליקציה.%20אשמח%20לדבר%20ולהתקדם!",
+                        "_blank"
+                      )
+                    }
                     type="button"
-                    className="btn    px-2"
+                    className="btn px-2"
                   >
-                    <strong className="  font-varela text-sm">
-                      {" "}
-                      תבנה לי אתר שמעיף לחלל{" "}
+                    <strong className="font-varela text-sm">
+                      תבנה לי אתר שמעיף לחלל
                     </strong>
                     <div id="container-stars">
                       <div id="stars"></div>

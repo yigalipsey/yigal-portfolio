@@ -45,24 +45,24 @@ const ServicesSection = () => {
     {
       title: "עיצוב ופיתוח אתרים",
       description:
-        "אני יוצר אתרי אינטרנט מודרניים, עם עיצוב ייחודי וחווית משתמש מצוינת.",
+        "יצירת אתרי אינטרנט מודרניים, עם עיצוב ייחודי וחווית משתמש מצוינת.",
       icon: "https://cdn.lordicon.com/eyjfodee.json",
     },
     {
       title: "פיתוח אפליקציות ווב",
       description:
-        "אני מפתח אפליקציות ווב מתקדמות, עם דגש על ביצועים ונוחות שימוש.",
+        "פיתוח אפליקציות ווב מתקדמות, עם דגש על ביצועים ונוחות שימוש.",
       icon: "https://cdn.lordicon.com/bzxxzycl.json",
     },
     {
       title: "פיתוח פולסטאק",
-      description: "אני מפתח מערכות ווב מלאות, מהצד הקדמי ועד לצד השרת.",
+      description: "פיתוח מערכות ווב מלאות, מהצד הקדמי ועד לצד השרת.",
       icon: "https://cdn.lordicon.com/wbthjkyu.json",
     },
   ];
 
   return (
-    <section id="services" className="w-full mb-10">
+    <section id="services" className="w-full mb-10 md:mb-32">
       <div className="w-full mb-2 flex justify-end">
         <h1 className="rubik-bold mr-8 md:mr-32 md:mb-4 font-semibold text-[#9911ff] text-3xl md:text-5xl">
           השירותים <span className="text-white">שלי</span>

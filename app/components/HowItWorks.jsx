@@ -31,9 +31,9 @@ const TimelineItem = ({
     >
       <div
         className={cn(
-          " w-full leading-5 text-right p-3 md:p-4 rounded-lg",
-          !isLast && "mb-16 md:mb-24 ",
-          "border-2 bg-black border-[#4FF0B7] border-dotted rounded-xl "
+          " w-4/5 mx-auto leading-5 text-right p-3 md:p-4 rounded-lg",
+          !isLast && "mb-8 md:mb-2 ",
+          "border-2 bg-black border-[#4FF0B7] rounded-xl "
         )}
       >
         {customRender ? (
@@ -175,15 +175,15 @@ function HowItWorksPage({
   return (
     <div
       className={cn(
-        "   mb-20   mt-20 font-varela px-4 md:px-8 text-foreground",
+        "    mt-20 font-varela px-4 md:px-8 text-foreground",
         containerClassName
       )}
       dir="rtl"
       id="how-it-works"
       ref={containerRef}
     >
-      <div className="md:w-4/5 md:mx-auto  md:mb-4 flex justify-start">
-        <h1 className="rubik-bold font-semibold text-[#4FF0B7] text-2xl md:text-4xl">
+      <div className="md:w-4/5  md:mx-auto   md:mb-4 flex justify-start">
+        <h1 className="rubik-bold font-semibold  mr-6 md:mr-20 text-[#4FF0B7] text-2xl md:text-4xl">
           תהליך <span className="text-white">העבודה</span>
         </h1>
       </div>
