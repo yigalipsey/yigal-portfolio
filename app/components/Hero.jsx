@@ -16,7 +16,10 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative text-5xl rubik-bold w-full h-[95vh] md:h-[100vh] flex flex-col items-center justify-start text-center text-white overflow-hidden pt-10">
+    <section
+      id="home"
+      className="relative text-5xl rubik-bold w-full h-[95vh] md:h-[100vh] flex flex-col items-center justify-start text-center text-white overflow-hidden pt-10"
+    >
       {/* אלמנט הרקע עם הנקודות */}
       <div className="relative w-full bg-hero h-full z-0 flex flex-col items-center justify-start ">
         <div className="relative z-10 flex flex-col items-center">
@@ -50,17 +53,19 @@ const Hero = () => {
         </div>
         {/* כפתור קריאה לפעולה */}
 
-        <button
-          href="#projects"
+        <a
+          href="https://wa.me/972533350910?text=שלום%20יגאל,%20אני%20מתעניין%20בשירותי%20פיתוח%20אתר%20או%20אפליקציה.%20אשמח%20לדבר%20ולהתקדם!"
+          target="_blank"
+          rel="noopener noreferrer"
           className="group relative my-8 rounded-full hover:bg-white bg-gradient-to-r from-[#1461ED]/30 via-[#1461ED]/30 via-40% to-[#1461ED]/30 p-1 text-white transition-transform hover:scale-110 active:scale-105 hero-button"
         >
-          <div className="relative flex items-center  justify-center gap-2 rounded-full bg-gradient-to-r from-[#1461ED] via-[#1461ED] via-40% to-[#1461ED] px-4 py-2 text-white">
-            <PhoneCall className="w-[25px] h-[25px]   text-white" />
+          <div className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1461ED] via-[#1461ED] via-40% to-[#1461ED] px-4 py-2 text-white">
+            <PhoneCall className="w-[25px] h-[25px] text-white" />
             <span className="text-lg">צור קשר </span>
           </div>
-        </button>
-        <div className=" w-5/6 md:w-[98%]   -mt-14 flex justify-end">
-          <ArrowDown className="w-8 md:w-14 md:h-14 animate-bounce  text-white" />
+        </a>
+        <div className=" w-5/6 md:w-[98%] -mt-14 flex justify-end">
+          <ArrowDown className="w-8 md:w-14 md:h-14 animate-bounce text-white" />
         </div>
       </div>
     </section>

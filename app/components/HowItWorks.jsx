@@ -179,6 +179,7 @@ function HowItWorksPage({
         containerClassName
       )}
       dir="rtl"
+      id="how-it-works"
       ref={containerRef}
     >
       <div className="md:w-4/5 md:mx-auto  md:mb-4 flex justify-start">

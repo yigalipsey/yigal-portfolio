@@ -1,269 +1,162 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import TextBorderAnimation from "./../../components/animata/text/text-border-animation"; // ייבוא קומפוננטת TextBorderAnimation
 
-const NavBar = () => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef(null);
-  const { height } = useDimensions(containerRef);
-
-  console.log("isOpen", isOpen);
-
-  return (
-    <div style={container}>
-      <motion.nav
-        initial={false}
-        animate={isOpen ? "open" : "closed"}
-        custom={height}
-        ref={containerRef}
-        style={nav}
-      >
-        <motion.div
-          style={background}
-          variants={sidebarVariants}
-          className="bg-grainy-blue "
-        />
-        <motion.div
-          style={dottedBackground}
-          initial="closed"
-          animate={isOpen ? "open" : "closed"}
-          variants={dottedBackgroundVariants}
-        />
-        <Navigation />
-        <MenuToggle toggle={() => setIsOpen(!isOpen)} />
-      </motion.nav>
-    </div>
-  );
-};
-
-const navVariants = {
-  open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-};
-
-const Navigation = () => (
-  <motion.ul style={list} variants={navVariants}>
-    <MenuItem text="דף הבית" href="/" />
-    <MenuItem text="פרוייקטים" href="/projects" />
-    <MenuItem text="שירותים" href="/services" />
-  </motion.ul>
-);
-
-const itemVariants = {
-  open: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      x: { stiffness: 1000, velocity: -100 },
-    },
-  },
-  closed: {
-    x: 50,
-    opacity: 0,
-    transition: {
-      x: { stiffness: 1000 },
-    },
-  },
-};
-
-const MenuItem = ({ text, href }) => {
-  return (
-    <motion.li
-      style={listItem}
-      variants={itemVariants}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      <a href={href} style={menuLink} className="font-varela">
-        {text}
-      </a>
-    </motion.li>
-  );
-};
-
-const sidebarVariants = {
-  open: (height = 1000) => ({
-    clipPath: `circle(${height * 2 + 200}px at calc(100% - 40px) 40px)`,
-    transition: {
-      type: "spring",
-      stiffness: 20,
-      restDelta: 2,
-    },
-  }),
-  closed: {
-    clipPath: "circle(30px at calc(100% - 40px) 40px)",
-    transition: {
-      delay: 0.5,
-      type: "spring",
-      stiffness: 400,
-      damping: 40,
-    },
-  },
-};
-
-const dottedBackgroundVariants = {
-  open: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  closed: {
-    opacity: 0,
-    transition: {
-      duration: 0.5,
-    },
-  },
-};
-
-const Path = (props) => (
-  <motion.path
-    fill="transparent"
-    strokeWidth="3"
-    stroke="#fff"
-    strokeLinecap="round"
-    {...props}
-  />
-);
-
-const MenuToggle = ({ toggle }) => (
-  <button style={toggleContainer} onClick={toggle} className="bg-grainy-blue">
-    <div style={iconWrapper}>
-      <svg width="23" height="23" viewBox="0 0 23 23">
-        <Path
-          variants={{
-            closed: { d: "M 2 2.5 L 20 2.5" },
-            open: { d: "M 3 16.5 L 17 2.5" },
-          }}
-        />
-        <Path
-          d="M 2 9.423 L 20 9.423"
-          variants={{
-            closed: { opacity: 1 },
-            open: { opacity: 0 },
-          }}
-          transition={{ duration: 0.1 }}
-        />
-        <Path
-          variants={{
-            closed: { d: "M 2 16.346 L 20 16.346" },
-            open: { d: "M 3 2.5 L 17 16.346" },
-          }}
-        />
-      </svg>
-    </div>
-  </button>
-);
-
-const useDimensions = (ref) => {
-  const dimensions = useRef({ width: 0, height: 0 });
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    if (ref.current) {
-      dimensions.current.width = ref.current.offsetWidth;
-      dimensions.current.height = ref.current.offsetHeight;
-    }
-  }, [ref]);
+    setHydrated(true);
+  }, []);
 
-  return dimensions.current;
+  if (!hydrated) {
+    return null;
+  }
+
+  const toggleSidebar = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  return (
+    <StyledPage>
+      <div className="navbar">
+        {/* אייקון ההמבורגר */}
+        <div className="hamburger" onClick={toggleSidebar}>
+          <svg viewBox="0 0 32 32" className={isOpen ? "open" : ""}>
+            <path
+              className="line line-top-bottom"
+              d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+            />
+            <path className="line" d="M7 16 27 16" />
+          </svg>
+        </div>
+
+        {/* תפריט צדדי */}
+        <div
+          className={`sidebar  font-varela dotted-nav bg-grainy-blue ${
+            isOpen ? "open" : ""
+          }`}
+        >
+          <ul>
+            <li>
+              <a href="#home">
+                <TextBorderAnimation text="בית" />
+              </a>
+            </li>
+            <li>
+              <a href="#services">
+                <TextBorderAnimation text="השירותים שלי" />
+              </a>
+            </li>
+            <li>
+              <a href="#projects">
+                <TextBorderAnimation text="עבודות אחרונות" />
+              </a>
+            </li>
+            <li>
+              <a href="#how-it-works">
+                <TextBorderAnimation text="איך זה עובד" />
+              </a>
+            </li>
+            <li>
+              <a href="#about">
+                <TextBorderAnimation text="קצת עליי" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </StyledPage>
+  );
 };
 
-const container = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 1000,
-  pointerEvents: "none",
-};
+const StyledPage = styled.div`
+  .navbar {
+    position: relative;
+  }
 
-const nav = {
-  position: "fixed",
-  top: 0,
-  right: 0,
-  bottom: 0,
-  width: "300px",
-  pointerEvents: "auto",
-};
+  /* סגנון ההמבורגר */
+  .hamburger {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 200;
+    cursor: pointer;
+    width: 3em;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1461ed; /* כחול */
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  }
 
-const background = {
-  position: "fixed",
-  top: 0,
-  right: 0,
-  bottom: 0,
-  width: "300px",
-};
+  .hamburger svg {
+    height: 2em;
+    stroke: white; /* צבע ההמבורגר - לבן */
+    transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-const dottedBackground = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
-  backgroundSize: "15px 15px",
-  backgroundPosition: "center bottom",
-  maskImage:
-    "linear-gradient(to top, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0) 60%)",
-  maskSize: "100% 100%",
-  maskRepeat: "no-repeat",
-  zIndex: 1,
-  pointerEvents: "none",
-};
+  .hamburger svg.open {
+    transform: rotate(-45deg);
+  }
 
-const toggleContainer = {
-  position: "fixed",
-  outline: "none",
-  border: "none",
-  cursor: "pointer",
-  top: 18,
-  right: 15,
-  width: 50,
-  height: 50,
-  borderRadius: "50%",
-  zIndex: 1001,
-};
+  .line {
+    fill: none;
+    stroke: white; /* צבע קווי ההמבורגר - לבן */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3;
+    transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+      stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-const iconWrapper = {
-  width: "100%",
-  height: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
+  .line-top-bottom {
+    stroke-dasharray: 12 63;
+  }
 
-const list = {
-  padding: "25px",
-  position: "absolute",
-  top: "80px",
-  width: "230px",
-  right: "20px",
-  zIndex: 2,
-};
+  .hamburger svg.open .line-top-bottom {
+    stroke-dasharray: 20 300;
+    stroke-dashoffset: -32.42;
+  }
 
-const listItem = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: 0,
-  margin: "0 0 15px 0",
-  cursor: "pointer",
-  width: "100%",
-};
+  /* סגנון התפריט הצדדי */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: #1461ed;
+    color: white;
+    transition: right 0.4s ease-in-out;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    overflow-y: auto;
+    pointer-events: none; /* מונע אינטראקציה כשסגור */
+    padding-top: 100px;
+  }
 
-const menuLink = {
-  color: "#fff",
-  textDecoration: "none",
-  fontSize: "1.5rem",
-  width: "100%",
-  padding: "10px 0",
-  textAlign: "right",
-};
+  .sidebar.open {
+    right: 0;
+    pointer-events: auto; /* מאפשר אינטראקציה כשפתוח */
+  }
 
-export default NavBar;
+  .sidebar ul {
+    list-style: none;
+    margin: 0;
+    text-align: right;
+    font-family: "Varela Round", sans-serif;
+    margin-right: 20px;
+  }
+
+  .sidebar ul li {
+    margin: 20px 0;
+  }
+`;
+
+export default Navbar;

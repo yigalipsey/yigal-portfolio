@@ -2,6 +2,185 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  overflow: hidden;
+  height: 3rem;
+  background-color: #000000; /* רקע שחור */
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent; /* בורדר שקוף */
+  background-image: linear-gradient(#000000, #000000),
+    linear-gradient(317deg, #ffffff, #000000); /* אפקט לבן עם שחור הפוך */
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  transform: scale(1.1); /* אפקט הגדלה */
+}
+
+strong {
+  z-index: 2;
+  font-family: "Varela", sans-serif; /* פונט Varela */
+  font-size: 16px;
+  letter-spacing: 3px;
+  font-weight: 400; /* עובי דק יותר */
+  color: #ffffff; /* טקסט לבן */
+  text-shadow: 0 0 4px rgb(0, 0, 0);
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  background-color: #000000; /* צבע רקע שחור */
+}
+
+strong {
+  z-index: 2;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #ffffff; /* טקסט לבן */
+  text-shadow: 0 0 4px rgb(0, 0, 0);
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) {
+  background: rgba(255, 255, 255, 0.2); /* מעמעום צבע */
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(255, 255, 255, 0.2); /* מעמעום צבע */
+}
+
+.btn:hover {
+  transform: scale(1.1); /* אפקט הגדלה */
+}
+
+.btn:active {
+  border: double 4px #fe53bb;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.btn:active .circle {
+  background: #fe53bb;
+}
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+#stars::after {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+}
+
+#stars::before {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-135rem);
+  }
+}
+
+@keyframes animStarRotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes gradient_301 {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Rest of the original CSS remains unchanged */
+
+@keyframes pulse_3011 {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
 @keyframes pulse-scale {
   0%,
   100% {
@@ -79,22 +258,50 @@
   background-size: 20px 20px;
 }
 
-@keyframes waveDots {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 10px 10px; /* תנועה עדינה של הנקודות */
-  }
+.dotted-nav {
+  background-color: transparent;
+  position: relative;
 }
 
-@keyframes waveDots {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 10px 10px; /* תנועה עדינה של הנקודות */
-  }
+.dotted-nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 20%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  pointer-events: none; /* השכבה לא חוסמת לחיצות */
+  z-index: 0; /* נשארת מאחורי תוכן התפריט */
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: #1461ed;
+  color: white;
+  transition: right 0.4s ease-in-out;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1; /* התוכן נשאר מעל ה-::before */
+  overflow-y: auto;
+  pointer-events: none; /* חוסם אינטראקציות כשהתפריט סגור */
+  padding-top: 100px;
+}
+
+.sidebar.open {
+  right: 0;
+  pointer-events: auto; /* מאפשר אינטראקציות כשהתפריט פתוח */
 }
 
 .bg-dynamic-pattern {
@@ -122,7 +329,6 @@
   );
   mask-size: 100% 100%;
   mask-repeat: no-repeat;
-  animation: waveDots 10s linear infinite; /* אנימציה עדינה */
 }
 
 /* 🎨 רקע נאב בר כהה עם פאטרן */

@@ -1,5 +1,7 @@
 "use client";
+
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function ProjectCard({
   number,
@@ -10,15 +12,26 @@ export default function ProjectCard({
   direction = "right",
 }) {
   const isRight = direction === "right";
+  const [isMobile, setIsMobile] = useState(false);
 
-  // הפיכת image לאובייקט אם זה רק string
-  const imageSrc = typeof image === "string" ? image : image?.src;
-  const imageAlt =
-    typeof image === "string" ? title : image?.alt || "Project Image";
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const factor = isRight ? 1 : -1;
+  const tiltStyle = isMobile
+    ? "none"
+    : `perspective(800px) rotateY(${factor * 15}deg)`;
 
   return (
     <div
-      className={`relative w-full flex flex-col mobile:flex-col md:flex-row items-center justify-between p-6 rounded-lg overflow-visible ${
+      className={`relative  mt-8  md:mt-10  w-full flex flex-col mobile:flex-col md:flex-row items-center justify-between p-6 rounded-lg overflow-visible ${
         isRight ? "md:flex-row-reverse" : ""
       }`}
     >
@@ -30,8 +43,8 @@ export default function ProjectCard({
                    md:text-[180px] md:top-1/2 md:-translate-y-1/2
                      ${
                        isRight
-                         ? "md:right-[-20px] mobile:right-[5px] mobile:-translate-x-0"
-                         : "md:left-[-15px] mobile:left-[15px] mobile:-translate-x-0"
+                         ? "md:right-[-20px] mobile:right-[5px]"
+                         : "md:left-[-15px] mobile:left-[15px]"
                      }
                     `}
         >
@@ -53,7 +66,7 @@ export default function ProjectCard({
           >
             <TiltedCover
               direction={direction}
-              image={{ src: imageSrc, alt: imageAlt }}
+              image={{ src: image.src, alt: image.alt }}
             />
           </a>
         </div>
@@ -61,7 +74,7 @@ export default function ProjectCard({
 
       {/* צד ימין: תיאור הפרויקט */}
       <div
-        className={`flex font-varela flex-col justify-center items-start w-full md:w-1/3 text-white mobile:text-center md:justify-end md:items-end
+        className={`flex   font-varela flex-col justify-center items-start w-full md:w-1/3 text-white mobile:text-center md:justify-end md:items-end
         ${
           isRight
             ? "mobile:items-end mobile:text-right"
@@ -100,12 +113,8 @@ function TiltedCover({ image, direction = "right" }) {
             hover:scale-105 z-50
             `}
       style={{
-        transform:
-          typeof window !== "undefined" && window.innerWidth < 768
-            ? "none"
-            : `perspective(800px) rotateY(${factor * 15}deg)`,
+        transform: `perspective(800px) rotateY(${factor * 15}deg)`,
         willChange: "transform",
-        backfaceVisibility: "hidden",
       }}
     >
       <Image
@@ -113,9 +122,8 @@ function TiltedCover({ image, direction = "right" }) {
         alt={image.alt}
         width={400}
         height={250}
-        className="w-full h-full object-cover relative"
+        className="w-full h-full object-cover"
         priority
-        style={{ pointerEvents: "auto" }}
       />
     </div>
   );

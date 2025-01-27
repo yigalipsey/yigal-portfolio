@@ -44,11 +44,11 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="flex   mt-20 relative   flex-col w-full md:w-5/6 items-center justify-center mx-auto min-h-screen  mobile:w-full mobile:p-0"
+      className="flex mt-20 relative flex-col w-full md:w-5/6 items-center justify-center mx-auto min-h-screen mobile:w-full mobile:p-0"
     >
-      <div className=" w-full mb-8 md:mb-0  flex justify-end">
-        <h1 className=" rubik-bold mr-8 md:mr-2 font-semibold text-[#ff0088] text-3xl md:text-5xl">
-          פרוייקטים <span className=" text-white 3">אחרונים </span>
+      <div className="w-full  md:mb-0 flex justify-end">
+        <h1 className="rubik-bold mr-8 md:mr-2 font-semibold text-[#ff0088] text-3xl md:text-5xl">
+          פרוייקטים <span className="text-white">אחרונים</span>
         </h1>
       </div>
       {projects.map((project, index) => (

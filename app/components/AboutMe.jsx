@@ -21,20 +21,15 @@ const AboutMe = () => {
   const topSvgRef = useRef(null);
   const bottomSvgRef = useRef(null);
   const animationTriggerRef = useRef(null);
-  const topTriggerRef = useRef(null);
+  //const topTriggerRef = useRef(null) //Removed
   const messageIndexRef = useRef(0);
   const [, forceUpdate] = useState({});
 
   const [rocketState, setRocketState] = useState("onEarth");
   const [rocketPosition, setRocketPosition] = useState({ x: 0, y: 0 });
-  const [starState, setStarState] = useState({
-    sizes: {
-      star4: 20,
-      star5: 30,
-      star6: 40,
-    },
-    rotating: false,
-  });
+
+  const [animationTriggered, setAnimationTriggered] = useState(false);
+  const [animationCompleted, setAnimationCompleted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,19 +41,13 @@ const AboutMe = () => {
   }, []);
 
   useClientEffect(() => {
+    if (animationCompleted) return; // Stop further animations if completed
+
     const bottomObserver = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && rocketState === "onEarth") {
+        if (entry.isIntersecting && !animationTriggered) {
           moveRocket();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    const topObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && rocketState === "onMoon") {
-          returnRocket();
+          setAnimationTriggered(true);
         }
       },
       { threshold: 0.5 }
@@ -68,19 +57,12 @@ const AboutMe = () => {
       bottomObserver.observe(animationTriggerRef.current);
     }
 
-    if (topTriggerRef.current) {
-      topObserver.observe(topTriggerRef.current);
-    }
-
     return () => {
       if (animationTriggerRef.current) {
         bottomObserver.unobserve(animationTriggerRef.current);
       }
-      if (topTriggerRef.current) {
-        topObserver.unobserve(topTriggerRef.current);
-      }
     };
-  }, [rocketState]);
+  }, [rocketState, animationTriggered, animationCompleted]);
 
   const messages = ["תקשיבו לו", "לא קיבלתי חטיף\n כדי להגיד את זה"];
 
@@ -112,24 +94,6 @@ const AboutMe = () => {
     </div>
   );
 
-  const getStarStyle = (size, top, right, bottom, left, index) => ({
-    position: "absolute",
-    width: `${size}px`,
-    height: `${size}px`,
-    top,
-    right,
-    bottom,
-    left,
-    background:
-      "radial-gradient(circle, rgba(251, 239, 63, 1) 0%, rgba(255, 253, 212, 1) 100%)",
-    clipPath:
-      "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
-    transition: "all 3.4s ease",
-    animation: starState.rotating
-      ? `rotate ${3 + index * 2}s normal linear infinite`
-      : "none",
-  });
-
   const moveRocket = () => {
     if (topSvgRef.current && bottomSvgRef.current) {
       const topRect = topSvgRef.current.getBoundingClientRect();
@@ -140,36 +104,25 @@ const AboutMe = () => {
 
       setRocketPosition({ x, y });
       setRocketState("moving");
-      setStarState({
-        sizes: {
-          star4: 30,
-          star5: 45,
-          star6: 55,
-        },
-        rotating: true,
-      });
 
       setTimeout(() => {
         setRocketState("onMoon");
-      }, 1000);
+        // Automatically trigger return after 10 seconds on the moon
+        setTimeout(() => {
+          returnRocket();
+        }, 10000);
+      }, 3000);
     }
   };
 
   const returnRocket = () => {
     setRocketState("returning");
     setRocketPosition({ x: 0, y: 0 });
-    setStarState({
-      sizes: {
-        star4: 20,
-        star5: 30,
-        star6: 40,
-      },
-      rotating: false,
-    });
 
     setTimeout(() => {
       setRocketState("onEarth");
-    }, 1000);
+      setAnimationCompleted(true);
+    }, 3000);
   };
 
   const openWhatsApp = () => {
@@ -177,9 +130,13 @@ const AboutMe = () => {
   };
 
   return (
-    <div className="flex relative justify-center mt-10 md:mb-28 mb-10 items-center bg-cover bg-center bg-no-repeat">
+    <div
+      id="about"
+      className="flex relative justify-center mt-10 md:mb-28 mb-10 items-center bg-cover bg-center bg-no-repeat"
+    >
       <Script src="https://cdn.lordicon.com/lordicon.js" />
-      <div ref={topTriggerRef} className="h-1 w-full absolute top-0" />
+
+      {/*Removed*/}
       <div className="w-[90%] dotted-background mx-auto py-4.5 p-4 sm:p-8 relative">
         <div className="bg-black w-full p-4 py-6">
           <div className="relative">
@@ -189,37 +146,6 @@ const AboutMe = () => {
                   <SpeechBubble>{messages[0]}</SpeechBubble>
                 </div>
               )}
-
-              <div
-                style={getStarStyle(
-                  starState.sizes.star4,
-                  "4%",
-                  "5px",
-                  undefined,
-                  undefined,
-                  1
-                )}
-              />
-              <div
-                style={getStarStyle(
-                  starState.sizes.star5,
-                  undefined,
-                  undefined,
-                  "24%",
-                  undefined,
-                  2
-                )}
-              />
-              <div
-                style={getStarStyle(
-                  starState.sizes.star6,
-                  undefined,
-                  "25%",
-                  "20%",
-                  undefined,
-                  3
-                )}
-              />
 
               <div className="relative mx-auto w-56 md:w-72 aspect-square rounded-lg ">
                 <img
@@ -286,39 +212,47 @@ const AboutMe = () => {
                   <lord-icon
                     ref={bottomSvgRef}
                     src="https://cdn.lordicon.com/kkjdkiwn.json"
-                    trigger={
-                      rocketState === "moving" || rocketState === "returning"
-                        ? "loop"
-                        : ""
-                    }
+                    trigger={rocketState === "onEarth" ? "morph" : "loop"}
+                    delay={rocketState === "onEarth" ? "0" : "1000"}
                     state={
-                      rocketState === "moving" || rocketState === "returning"
-                        ? "loop-flying"
-                        : ""
+                      rocketState === "onEarth" ? "morph-launch" : "hover-roll"
                     }
-                    colors="primary:#ffffff,secondary:#ffffff"
+                    colors="primary:#ffffff,secondary:#f3e618"
                     style={{
-                      width: "50px",
-                      height: "50px",
+                      width: "70px",
+                      height: "70px",
                       position: "absolute",
+
                       left: "5%",
                       bottom: "10px",
                       transform:
                         rocketState !== "onEarth"
-                          ? `translate(${rocketPosition.x - 15}px, ${
-                              rocketPosition.y
-                            }px) scale(0.7) rotate(${
-                              rocketState === "returning" ? "131deg" : "-49deg"
+                          ? `translate(${rocketPosition.x - 35}px, ${
+                              rocketPosition.y - 10
+                            }px) scale(0.8)  rotate(${
+                              rocketState === "returning" ? "31deg" : "-49deg"
                             })`
-                          : "none",
-                      transition: "all 1s ease-in-out",
+                          : "-90deg",
+                      transition: "all 3s ease-in-out",
                     }}
                   ></lord-icon>
                   <button
-                    className="bg-black border border-1 mt-3 border-[#F3E618] hover:text-[#F3E618] font-bold py-2 px-4 rounded"
                     onClick={openWhatsApp}
+                    type="button"
+                    className="btn    px-2"
                   >
-                    תבנה לי אתר שמעיף לחלל{" "}
+                    <strong className="  font-varela text-sm">
+                      {" "}
+                      תבנה לי אתר שמעיף לחלל{" "}
+                    </strong>
+                    <div id="container-stars">
+                      <div id="stars"></div>
+                    </div>
+
+                    <div id="glow">
+                      <div className="circle"></div>
+                      <div className="circle"></div>
+                    </div>
                   </button>
                 </div>
               </div>
@@ -327,16 +261,6 @@ const AboutMe = () => {
         </div>
       </div>
       <div ref={animationTriggerRef} className="h-1 w-full absolute bottom-0" />
-      <style jsx>{`
-        @keyframes rotate {
-          from {
-            transform: rotate(45deg);
-          }
-          to {
-            transform: rotate(50deg);
-          }
-        }
-      `}</style>
     </div>
   );
 };
